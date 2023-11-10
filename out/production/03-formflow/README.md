@@ -1,20 +1,19 @@
-# Project Name
-Put here a short paragraph describing your project. 
-Adding an screenshot or a mockup of your application in action would be nice.  
+# FormFlow
+This product  is a Java application designed to facilitate the completion of application forms. 
+The target audience for this application comprises technologically proficient professionals seeking 
+to optimize their time during the form-filling process. This product significantly expedites form completion, 
+with the overarching objective of minimizing redundancies in the form-filling experience, particularly in 
+scenarios involving multiple forms requesting identical information.
 
-![This is a screenshot.](images.png)
+At a high level, the operational workflow of the application involves the user uploading the forms requiring 
+completion. Subsequently, FormFlow conducts a comprehensive analysis of the provided PDF documents, presenting 
+the user with a streamlined interface containing all pertinent fields that necessitate completion. Users then 
+proceed to input the required information directly within the FormFlow application.
+
+![This is a screenshot.](Scrum1.png)
 # How to run
-Provide here instructions on how to use your application.   
-- Download the latest binary from the Release section on the right on GitHub.  
-- On the command line uncompress using
-```
-tar -xzf  
-```
-- On the command line run with
-```
-./hello
-```
-- You will see Hello World! on your terminal. 
+- Download the executable and run the app
+- You will see the FormFlow UI!
 
 # How to contribute
 Follow this project board to know the latest status of the project: [http://...]([http://...])  
