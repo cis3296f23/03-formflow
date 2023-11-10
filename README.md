@@ -4,6 +4,8 @@ The product that we are developing is a Java application that assists users in f
 The baseline goal is scanning documents, and presenting their fields, repeated or otherwise to the user to fill out. This way the user fills out their information once to complete a series of forms that ask for the same thing. This will only be a successful project if our product design itself is good. Once we have the mechanics of the application our goal is to make it easy to use. The market is tech-savvy professionals, but it should be useable and understandable for anyone with basic computer knowledge to consider it a success. There are also features we may be able to implement to supplement the application like pre-logged user information, but for the scope of this project that may present security issues we are not equipped to deal with yet. It is something to consider if we have time at the end of the semester, which is unlikely. 
 
 ![This is a screenshot.](Scrum1.png)
+
+![This is a screenshot.](Image2.png)
 # How to run
 - Download the executable and run the app
 - You will see the FormFlow UI!
