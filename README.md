@@ -1,14 +1,7 @@
 # FormFlow
-This product  is a Java application designed to facilitate the completion of application forms. 
-The target audience for this application comprises technologically proficient professionals seeking 
-to optimize their time during the form-filling process. This product significantly expedites form completion, 
-with the overarching objective of minimizing redundancies in the form-filling experience, particularly in 
-scenarios involving multiple forms requesting identical information.
+The product that we are developing is a Java application that assists users in filling out application forms. The target customers for this application are tech-savvy professionals who need to save time when filling out forms. The objective of developing this product is to reduce redundancies wherever possible when filling out forms. This can be especially useful in a series of forms that ask for the same information. In broad strokes, the way the application itself will work is first the user uploads the forms they need to fill out. Then FormFlow scans the PDF and presents the user with all the relevant fields that need to be answered by the forms. The user will fill them out in one place on FormFlow and the application will fill out the documents. 
 
-At a high level, the operational workflow of the application involves the user uploading the forms requiring 
-completion. Subsequently, FormFlow conducts a comprehensive analysis of the provided PDF documents, presenting 
-the user with a streamlined interface containing all pertinent fields that necessitate completion. Users then 
-proceed to input the required information directly within the FormFlow application.
+The baseline goal is scanning documents, and presenting their fields, repeated or otherwise to the user to fill out. This way the user fills out their information once to complete a series of forms that ask for the same thing. This will only be a successful project if our product design itself is good. Once we have the mechanics of the application our goal is to make it easy to use. The market is tech-savvy professionals, but it should be useable and understandable for anyone with basic computer knowledge to consider it a success. There are also features we may be able to implement to supplement the application like pre-logged user information, but for the scope of this project that may present security issues we are not equipped to deal with yet. It is something to consider if we have time at the end of the semester, which is unlikely. 
 
 ![This is a screenshot.](Scrum1.png)
 # How to run
