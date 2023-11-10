@@ -5,7 +5,7 @@ The baseline goal is scanning documents, and presenting their fields, repeated o
 
 ![This is a screenshot.](Scrum1.png)
 
-![This is a screenshot.](Image2.png)
+![This is a screenshot.](image2.png)
 # How to run
 - Download the executable and run the app
 - You will see the FormFlow UI!
