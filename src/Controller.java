@@ -85,45 +85,20 @@ public class Controller {
     private Label rightStatusLabel;
 
     List<String> fileNames = new ArrayList<>();
-    int i = 0;
     List<ListItem> fileList= new ArrayList<>();
     @FXML
     private void initialize() {
+        //Create a folder in the users files if there already isn't one
+        Initializer initializer = new Initializer();
+        initializer.createFolders();
+        initializer.loadFiles();
         uploadButton.setOnAction(actionEvent -> {
-            fileNames.add("file" + i + ".pdf");
-            populateFileNameList();
-            i++;
+            //add a new file to the list
+            initializer.uploadNewFile();
+            initializer.populateFileNameList(formListView);
         });
         downloadAllButton.setOnAction(actionEvent -> System.out.println("download all"));
         generateButton.setOnAction(actionEvent -> System.out.println("generate"));
-        populateFileNameList();
-    }
-
-
-
-    private void populateFileNameList() {
-
-        formListView.getItems().clear();
-        for (String fileName : fileNames) {
-
-
-            CheckBox checkBox = new CheckBox();
-            checkBox.setOnAction(actionEvent -> handleCheckBox(checkBox, fileName));
-            Label label = new Label(fileName);
-
-            HBox hbox = new HBox(checkBox, label);
-            ListItem newListItem = new ListItem(checkBox,label);
-            fileList.add(newListItem);
-            formListView.getItems().add(hbox);
-
-        }
-    }
-
-    private void handleCheckBox(CheckBox checkBox, String fileName) {
-        if (checkBox.isSelected()) {
-            System.out.println(fileName + " Selected");
-        } else {
-            System.out.println(fileName + " Un-Selected");
-        }
+        initializer.populateFileNameList(formListView);
     }
 }
