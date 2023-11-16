@@ -1,7 +1,10 @@
 package src;
 
+import javafx.stage.Stage;
+
 public class Main {
     public static void main(String[] args){
-        System.out.println("HELLOW");
+        ContainerMain.launch(ContainerMain.class, args);
+
     }
 }
