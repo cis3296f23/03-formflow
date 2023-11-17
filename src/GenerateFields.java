@@ -31,7 +31,7 @@ public class GenerateFields {
 
         // Extracting all fields from each pdf file
         for (File pdfFile : uploadPdf.getListView().getItems()) {
-            List<PDField> fields = null;  // Move the declaration inside the loop
+            List<PDField> fields = null;  
             try (PDDocument document = PDDocument.load(pdfFile)) {
                 PDAcroForm acroform = document.getDocumentCatalog().getAcroForm();
                 if (acroform != null) {
