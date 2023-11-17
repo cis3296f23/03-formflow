@@ -28,22 +28,24 @@ public class GenerateFields {
 
         // Data Structure for unique fields
         Set<String> uniqueFields = new HashSet<>();
-        List<PDField> fields = null;
 
         // Extracting all fields from each pdf file
         for (File pdfFile : uploadPdf.getListView().getItems()) {
+            List<PDField> fields = null;  // Move the declaration inside the loop
             try (PDDocument document = PDDocument.load(pdfFile)) {
                 PDAcroForm acroform = document.getDocumentCatalog().getAcroForm();
-                fields = acroform.getFields();
+                if (acroform != null) {
+                    fields = acroform.getFields();
+                    // Adding unique fields from this pdf file
+                    for (PDField field : fields) {
+                        uniqueFields.add(field.getFullyQualifiedName());
+                    }
+                }
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
         }
 
-        // Adding unique fields from each pdf file
-        for (PDField field : fields) {
-            uniqueFields.add(field.getFullyQualifiedName());
-        }
 
         // Layout for form fields
         uploadPdf.getFormFieldsContainer().getChildren().remove(1, uploadPdf.getFormFieldsContainer().getChildren().size());// Clear previous fields if any
