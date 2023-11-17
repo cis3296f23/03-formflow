@@ -108,7 +108,7 @@ public class UploadPdf extends Application {
         );
 
 
-        Scene scene = new Scene(mainLayout, 800, 450);
+        Scene scene = new Scene(mainLayout, 830, 550);
 
         primaryStage.setScene(scene);
         primaryStage.show();
