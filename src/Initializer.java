@@ -3,8 +3,14 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.HBox;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -55,7 +61,7 @@ public class Initializer {
             }
         }
     }
-    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
+
     public void populateFileNameList(ListView listView){
         listView.getItems().clear();
         for(StructuredFile file : StructuredFiles){
@@ -69,8 +75,36 @@ public class Initializer {
         }
     }
 
-    public void uploadNewFile(){
+    public void uploadNewFile(Stage stage){
         //code for uploading new file goes here
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Choose PDFs to upload");
+
+        // Add a PDF filter
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("PDF files (*.pdf)", "*.pdf");
+        fileChooser.getExtensionFilters().add(extFilter);
+
+        // Show the file dialog
+        List<File> selectedFiles = fileChooser.showOpenMultipleDialog(stage);
+
+        // Where to put the newly uploaded files
+        File destination = new File(mainFolder, subFolder1);
+
+        // If there are files selected, copy them to the applications folders for processing
+        if (selectedFiles != null) {
+            System.out.println("Selected files: " + selectedFiles);
+            for (File file : selectedFiles){
+                try{
+                    Path dest = Path.of(destination.getAbsolutePath(), file.getName());
+                    Files.copy(file.toPath(), dest, StandardCopyOption.REPLACE_EXISTING);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        } else {
+            System.out.println("User cancelled file selection");
+        }
+
     }
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
     private void createSubFolder(File parent, String folderName){
@@ -95,4 +129,6 @@ public class Initializer {
             System.out.println(fileName + " Un-Selected");
         }
     }
+
+
 }
