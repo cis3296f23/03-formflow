@@ -98,7 +98,7 @@
                   </ScrollPane>
                   <ScrollPane layoutX="10.0" layoutY="450.0" prefHeight="91.0" prefWidth="225.0">
                     <content>
-                      <AnchorPane fx:id="downloadableFilesBox" minHeight="0.0" minWidth="0.0" prefHeight="97.0" prefWidth="210.0" />
+                      <AnchorPane fx:id="downloadableFilesBox" minHeight="0.0" minWidth="0.0" prefHeight="99.0" prefWidth="206.0" />
                     </content>
                   </ScrollPane>
                   <Button fx:id="generateButton" layoutX="542.0" layoutY="425.0" mnemonicParsing="false" text="Generate" />

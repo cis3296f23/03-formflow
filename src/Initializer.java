@@ -28,8 +28,9 @@ public class Initializer {
     final String subFolder3 = "Data";
     final String fileExtension = ".pdf";
 
-    final String programFilesPath = System.getenv("ProgramFiles");
-    final File mainFolder = new File(programFilesPath, programName);
+    final String homePath = System.getProperty("user.home");
+    final File documentsPath = new File(homePath, "Documents");
+    final File mainFolder = new File(documentsPath.getAbsolutePath(), programName);
 
     Set<String> uniqueFileNames = new HashSet<>();
     List<StructuredFile> StructuredFiles = new ArrayList<>();
@@ -99,7 +100,6 @@ public class Initializer {
             listView.getItems().add(bp);
         }
     }
-
     private void removeFile(StructuredFile file){
         // Add checker to make sure user wants to delete the file (and maybe a "don't ask again" button)
         File folder = new File(mainFolder, subFolder1);
@@ -123,7 +123,6 @@ public class Initializer {
         loadFiles();
         populateFileNameList(savedListView);
     }
-
     public void uploadNewFile(Stage stage){
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Choose PDFs to upload");
@@ -154,7 +153,6 @@ public class Initializer {
             System.out.println("User canceled file selection");
         }
     }
-
     private void createSubFolder(File parent, String folderName){
         File subFolder = new File(parent, folderName); //where to create folder
         boolean subFolderCreated = subFolder.mkdir();
@@ -165,7 +163,6 @@ public class Initializer {
             System.out.println("Failed to create subfolder: " + folderName);
         }
     }
-
     //handles checkbox on list view eventually
     private void handleCheckBox(CheckBox checkBox, StructuredFile fileName) {
         if (checkBox.isSelected()) {
@@ -174,6 +171,4 @@ public class Initializer {
             System.out.println(fileName + " Un-Selected");
         }
     }
-
-
 }
