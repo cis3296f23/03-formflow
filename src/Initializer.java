@@ -1,8 +1,8 @@
 package src;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
+
+import javafx.fxml.FXML;
+import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
@@ -36,12 +36,18 @@ public class Initializer {
     List<StructuredFile> StructuredFiles = new ArrayList<>();
     ListView savedListView;
 
-    public void createFolders(){
-        if (mainFolder.exists()){ //check if the program has been opened before
+    private Controller controller;
+
+    public void setController(Controller controller) {
+        this.controller = controller;
+    }
+
+    public void createFolders() {
+        if (mainFolder.exists()) { //check if the program has been opened before
             System.out.println("Folder exists, do nothing");
         } else { // First time running, set up environment
             boolean folderCreated = mainFolder.mkdir();
-            if(folderCreated){
+            if (folderCreated) {
                 System.out.println("Folder Created at: " + mainFolder.getAbsolutePath());
                 createSubFolder(mainFolder, subFolder1);
                 createSubFolder(mainFolder, subFolder2);
@@ -51,34 +57,36 @@ public class Initializer {
             }
         }
     }
-    public void loadFiles(){
+
+    public void loadFiles() {
         //get the files that already exist in the folders and add them to the data structure
         File folder = new File(mainFolder, subFolder1);
-        if (folder.exists() && folder.isDirectory()){ //make sure you have the right folder
+        if (folder.exists() && folder.isDirectory()) { //make sure you have the right folder
             File[] files = folder.listFiles(); //get all the files in the folder
-            if(files != null){ //if it found files
-                for (File file : files){ //iterate through the files
-                    if(file.isFile() && file.getName().toLowerCase().endsWith(fileExtension)){ // check file validity and extension
-                        if (uniqueFileNames.add(file.getName())){ // see if the file name is unique to what is already in the list
+            if (files != null) { //if it found files
+                for (File file : files) { //iterate through the files
+                    if (file.isFile() && file.getName().toLowerCase().endsWith(fileExtension)) { // check file validity and extension
+                        if (uniqueFileNames.add(file.getName())) { // see if the file name is unique to what is already in the list
                             System.out.println("StructuredFiles: Adding file: " + file.getName());
                             //add the file to the structured file List
-                            StructuredFiles.add(new StructuredFile(file.getName(),file,"placeholder"));
+                            StructuredFiles.add(new StructuredFile(file.getName(), file, "placeholder"));
                         }
                     }
                 }
             }
         }
     }
-    public void populateFileNameList(ListView listView){
+
+    public void populateFileNameList(ListView listView) {
         listView.getItems().clear(); //clear the list so we don't have to check what's new
         savedListView = listView; //save the list view so that internal methods can reference it
-        for(StructuredFile file : StructuredFiles){ //iterate through all the files in structured file list
+        for (StructuredFile file : StructuredFiles) { //iterate through all the files in structured file list
             // checkbox to select files and make fields appear
             CheckBox checkBox = new CheckBox();
             checkBox.setOnAction(actionEvent -> handleCheckBox(checkBox, file));
             // wrap the file name if it is too long
             String text = file.fileName;
-            if (file.fileName.length() > 29){
+            if (file.fileName.length() > 29) {
                 text = (file.fileName.substring(0, 26) + "...");
             }
             //create a label to hold the file name
@@ -100,13 +108,14 @@ public class Initializer {
             listView.getItems().add(bp);
         }
     }
-    private void removeFile(StructuredFile file){
+
+    private void removeFile(StructuredFile file) {
         // Add checker to make sure user wants to delete the file (and maybe a "don't ask again" button)
         File folder = new File(mainFolder, subFolder1);
         File fileToDelete = new File(folder, String.valueOf(file.fileName));
 
-        if(fileToDelete.exists()){
-            if(fileToDelete.delete()){
+        if (fileToDelete.exists()) {
+            if (fileToDelete.delete()) {
                 System.out.println("Removed File: " + fileToDelete);
             } else {
                 System.out.println("Failed to Removed File: " + fileToDelete);
@@ -123,7 +132,8 @@ public class Initializer {
         loadFiles();
         populateFileNameList(savedListView);
     }
-    public void uploadNewFile(Stage stage){
+
+    public void uploadNewFile(Stage stage) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Choose PDFs to upload");
 
@@ -140,8 +150,8 @@ public class Initializer {
         // If there are files selected, copy them to the applications folders for processing
         if (selectedFiles != null) {
             System.out.println("Selected files: " + selectedFiles); //TESTING
-            for (File file : selectedFiles){ //iterate through the files selected
-                try{
+            for (File file : selectedFiles) { //iterate through the files selected
+                try {
                     //Copy each file into a folder that the program can access
                     Path dest = Path.of(destination.getAbsolutePath(), file.getName());
                     Files.copy(file.toPath(), dest, StandardCopyOption.REPLACE_EXISTING);
@@ -153,22 +163,34 @@ public class Initializer {
             System.out.println("User canceled file selection");
         }
     }
-    private void createSubFolder(File parent, String folderName){
+
+    private void createSubFolder(File parent, String folderName) {
         File subFolder = new File(parent, folderName); //where to create folder
         boolean subFolderCreated = subFolder.mkdir();
-        if(subFolderCreated){
+        if (subFolderCreated) {
             System.out.println("Subfolder: " + folderName + " success");
             System.out.println("Folder Created at: " + subFolder.getAbsolutePath());
         } else {
             System.out.println("Failed to create subfolder: " + folderName);
         }
     }
+
     //handles checkbox on list view eventually
+    private GenerateFields generateFields = new GenerateFields();
+
     private void handleCheckBox(CheckBox checkBox, StructuredFile fileName) {
+        // Update the unique fields based on the selection status of the checkbox
+        generateFields.updateFields(fileName.file.getAbsolutePath(), checkBox.isSelected());
+
         if (checkBox.isSelected()) {
             System.out.println(fileName + " Selected");
         } else {
             System.out.println(fileName + " Un-Selected");
         }
+        // Update the UI with the current set of unique fields
+        controller.updateUIWithFields(generateFields.getUniqueFields());
+
     }
+
+
 }
