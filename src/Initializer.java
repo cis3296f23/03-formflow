@@ -96,7 +96,11 @@ public class Initializer {
             //trash button to remove files
             Button trash = new Button("✖");
             trash.setStyle("-fx-background-radius: 2em;"); //makes the button round :)
-            trash.setOnAction(actionEvent -> removeFile(file));
+            trash.setOnAction(actionEvent -> {
+                generateFields.updateFields(file.file.getAbsolutePath(), false);
+                controller.updateUIWithFields(generateFields.getUniqueFields());
+                removeFile(file);
+            });
 
             //combine the checkbox and its label
             HBox hbox = new HBox(checkBox, label);
