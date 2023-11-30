@@ -18,17 +18,16 @@ public class GenerateFields {
      * Updates the set of unique fields based on whether a file is selected or not.
      * If the file is selected, adds its fields to the set, otherwise removes them.
      *
-     * @param filePath The path of the PDF file to process.
      * @param isSelected Flag indicating whether the file is selected.
      */
-    public void updateFields(String filePath, boolean isSelected) {
+    public void updateFields(StructuredFile file, boolean isSelected) {
         try {
             if (isSelected) {
                 // Add fields from the selected file
-                addFields(filePath);
+                addFields(file);
             } else {
                 // Remove fields from the deselected file
-                removeFields(filePath);
+                removeFields(file);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -38,36 +37,26 @@ public class GenerateFields {
     /**
      * Adds fields from a given PDF file to the unique fields set.
      *
-     * @param filePath Path of the PDF file to extract fields from.
+     *
      * @throws IOException If an error occurs while loading the PDF.
      */
-    private void addFields(String filePath) throws IOException {
-        try (PDDocument document = PDDocument.load(new File(filePath))) {
-            PDAcroForm acroForm = document.getDocumentCatalog().getAcroForm();
-            if (acroForm != null) {
-                // Iterate over each field in the PDF form and add its name to the set
-                for (PDField field : acroForm.getFields()) {
-                    uniqueFields.add(field.getPartialName());
-                }
-            }
+    private void addFields(StructuredFile file) throws IOException {
+        // Iterate over each field in the PDF form and add its name to the set
+        for (PDFieldWithLocation field : file.fields) {
+            uniqueFields.add(field.pdField.getPartialName());
         }
     }
 
     /**
      * Removes fields found in a given PDF file from the unique fields set.
      *
-     * @param filePath Path of the PDF file to remove fields from.
      * @throws IOException If an error occurs while loading the PDF.
      */
-    private void removeFields(String filePath) throws IOException {
-        try (PDDocument document = PDDocument.load(new File(filePath))) {
-            PDAcroForm acroForm = document.getDocumentCatalog().getAcroForm();
-            if (acroForm != null) {
-                // Iterate over each field in the PDF form and remove its name from the set
-                for (PDField field : acroForm.getFields()) {
-                    uniqueFields.remove(field.getPartialName());
-                }
-            }
+    private void removeFields(StructuredFile file) throws IOException {
+        // Iterate over each field in the PDF form and remove its name from the set
+        for (PDFieldWithLocation field : file.fields) {
+            uniqueFields.remove(field.pdField.getPartialName());
+
         }
     }
 

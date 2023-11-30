@@ -8,6 +8,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -100,7 +101,7 @@ public class Controller {
     }
 
     @FXML
-    void initialize() {
+    void initialize() throws IOException {
         //Create a folder in the users files if there already isn't one
         initializer.createFolders();
         //load the files in the folders into the list
@@ -111,7 +112,11 @@ public class Controller {
         uploadButton.setOnAction(actionEvent -> {
             //add a new file to the list
             initializer.uploadNewFile(theStage); //add new files to the folder
-            initializer.loadFiles(); //load the files in the folder into the list
+            try {
+                initializer.loadFiles(); //load the files in the folder into the list
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
             initializer.populateFileNameList(formListView); //display the list on the ui
         });
         downloadAllButton.setOnAction(actionEvent -> System.out.println("download all"));
