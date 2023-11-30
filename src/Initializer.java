@@ -9,9 +9,6 @@ import javafx.scene.layout.Priority;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-
-//hi shafi
-hi val
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
