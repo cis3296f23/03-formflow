@@ -100,7 +100,7 @@ public class Initializer {
     }
 
     public void populateFileNameList(ListView listView) {
-        listView.getItems().clear(); //clear the list so we don't have to check what's new
+        listView.getItems().clear(); //clear the list o we don't have to check what's new
         savedListView = listView; //save the list view so that internal methods can reference it
         for (StructuredFile file : StructuredFiles) { //iterate through all the files in structured file list
             // checkbox to select files and make fields appear
