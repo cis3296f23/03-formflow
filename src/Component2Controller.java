@@ -1,12 +1,18 @@
 package src;
 
-
+// javaFX imports
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+// PDF Box imports
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+// Java file handling
+import java.io.File;
+import java.io.IOException;
 
 public class Component2Controller {
     @FXML
@@ -18,64 +24,65 @@ public class Component2Controller {
     @FXML
     private SplitPane splitPane;
 
-    // Fields Pane
+    // Assets Pane
     @FXML
-    private Pane fieldsPane;
+    private Pane assetPane;
 
     @FXML
-    private Label fieldsLabel;
+    private Label assetLabel;
 
     @FXML
-    private ScrollPane fieldsScrollPane;
+    private ScrollPane assetScrollPane;
 
     @FXML
-    private AnchorPane fieldsBox;
-
-    @FXML
-    private ScrollPane downloadableFilesScrollPane;
-
-    @FXML
-    private AnchorPane downloadableFilesBox;
-
-    @FXML
-    private Button generateButton;
-
-    @FXML
-    private Button downloadAllButton;
+    private AnchorPane assetsBox;
 
     // Forms Pane
     @FXML
-    private Pane formsPane;
+    private Pane formPane;
 
     @FXML
-    private AnchorPane formsBox;
+    private AnchorPane assetBox;
 
     @FXML
-    private Label formsLabel;
+    private Label formName;
 
     @FXML
-    private Button uploadButton;
+    private Button saveButton;
 
     @FXML
-    private ListView formListView;
+    private ScrollPane assetListScrollPane;
 
+    static Stage pdfViewStage;
+    //Gets the stage from Container class
+    public static void giveStage(Stage stage) {
+        pdfViewStage = stage;
+    }
     @FXML
-    private ScrollPane fileNameListScrollPane;
+    private void initialize() {
+        //Create a folder in the users files if there already isn't one
+        Initializer initializer = new Initializer();
+        initializer.createFolders();
+        //load the files in the folders into the list
+//        initializer.loadFiles(loadingExistingDocument);
+        //display the list on the ui
 
-    @FXML
-    private AnchorPane fileNameList;
+    }
 
-    // Status Bar
-    @FXML
-    private HBox statusBar;
+    public static void loadingExistingDocument() throws IOException {
+        //Load existing pdf doc
+        File pdfFile = new File("res/OoPdfFormExample.pdf");
+        PDDocument document = null;
 
-    @FXML
-    private Label leftStatusLabel;
+        document = PDDocument.load(pdfFile);
 
-    @FXML
-    private Pane statusPane;
+        System.out.println("PDF Loaded");
 
-    @FXML
-    private Label rightStatusLabel;
+        document.addPage(new PDPage());
 
+        document.save("res/OoPdfFormExample.pdf");
+
+        //Closing the pdf doc
+        document.close();
+    }
 }

@@ -47,11 +47,11 @@
                 </Menu>
             </menus>
         </MenuBar>
-        <SplitPane dividerPositions="0.688195991091314" focusTraversable="true" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
+        <SplitPane focusTraversable="true" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
             <items>
-                <Pane prefHeight="200.0" prefWidth="200.0">
+                <Pane prefHeight="551.0" prefWidth="328.0">
                     <children>
-                        <Label alignment="CENTER" layoutX="175.0" layoutY="13.0" prefHeight="20.0" prefWidth="233.0" style="&#10;" text="Required Information" textAlignment="CENTER" wrapText="false">
+                        <Label alignment="CENTER" layoutX="14.0" layoutY="14.0" prefHeight="23.0" prefWidth="98.0" style="&#10;" text="Assets" textAlignment="CENTER" wrapText="false">
                             <font>
                                 <Font size="18.0" fx:id="x11" />
                             </font>
@@ -59,35 +59,21 @@
                                 <Color red="0.624" green="0.624" blue="0.624" fx:id="x21" />
                             </textFill>
                         </Label>
-                        <ScrollPane layoutX="10.0" layoutY="41.0" prefHeight="384.0" prefWidth="596.0">
+                        <ScrollPane layoutX="10.0" layoutY="39.0" prefHeight="475.0" prefWidth="284.0">
                             <content>
-                                <AnchorPane id="Content" fx:id="fieldsBox" minHeight="-1.0" minWidth="-1.0" prefHeight="402.0" prefWidth="580.0" />
+                                <AnchorPane id="Content" fx:id="fieldsBox" minHeight="-1.0" minWidth="-1.0" prefHeight="470.0" prefWidth="283.0" />
                             </content>
                         </ScrollPane>
-                        <ScrollPane layoutX="10.0" layoutY="450.0" prefHeight="91.0" prefWidth="225.0">
-                            <content>
-                                <AnchorPane fx:id="downloadableFilesBox" minHeight="0.0" minWidth="0.0" prefHeight="99.0" prefWidth="236.0" />
-                            </content>
-                        </ScrollPane>
-                        <Button fx:id="generateButton" layoutX="542.0" layoutY="425.0" mnemonicParsing="false" text="Submit" />
-                        <Button fx:id="downloadAllButton" layoutX="235.0" layoutY="516.0" mnemonicParsing="false" text="Download All" />
-                    </children>
-                </Pane>
-                <Pane prefHeight="200.0" prefWidth="200.0">
-                    <children>
-                        <AnchorPane id="Content" layoutX="-6.0" layoutY="3.0" minHeight="-1.0" minWidth="-1.0" prefHeight="545.0" prefWidth="277.0">
-                            <children>
-                                <Label alignment="CENTER" layoutX="14.0" layoutY="14.0" prefHeight="27.0" prefWidth="106.0" style="&#10;" text="PDF Forms" textAlignment="CENTER" wrapText="false">
-                                    <font>
-                                        <Font size="18.0" fx:id="x1" />
-                                    </font>
-                                    <textFill>
-                                        <Color red="0.624" green="0.624" blue="0.624" fx:id="x2" />
-                                    </textFill></Label>
-                                <Button fx:id="uploadButton" layoutX="102.0" layoutY="497.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="106.0" text="Generate" />
-                                <ListView fx:id="formListView" layoutX="13.0" layoutY="39.0" prefHeight="458.0" prefWidth="251.0" />
-                            </children>
-                        </AnchorPane>
+                        <Button fx:id="generateButton" layoutX="112.0" layoutY="514.0" mnemonicParsing="false" text="Submit" />
+                  <AnchorPane layoutX="309.0" layoutY="36.0" prefHeight="506.0" prefWidth="575.0" />
+                  <Label alignment="CENTER" layoutX="309.0" layoutY="14.0" prefHeight="23.0" prefWidth="98.0" style="&#10;" text="Forms" textAlignment="CENTER" wrapText="false">
+                     <font>
+                        <Font size="18.0" fx:id="x111" />
+                     </font>
+                     <textFill>
+                        <Color red="0.624" green="0.624" blue="0.624" fx:id="x211" />
+                     </textFill>
+                  </Label>
                     </children>
                 </Pane>
             </items>
