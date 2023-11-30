@@ -208,14 +208,14 @@ public class Initializer {
     //handles checkbox on list view eventually
     private GenerateFields generateFields = new GenerateFields();
 
-    private void handleCheckBox(CheckBox checkBox, StructuredFile fileName) {
+    private void handleCheckBox(CheckBox checkBox, StructuredFile file) {
         // Update the unique fields based on the selection status of the checkbox
-        generateFields.updateFields(fileName, checkBox.isSelected());
+        generateFields.updateFields(file, checkBox.isSelected());
 
         if (checkBox.isSelected()) {
-            System.out.println(fileName + " Selected");
+            System.out.println(file + " Selected");
         } else {
-            System.out.println(fileName + " Un-Selected");
+            System.out.println(file + " Un-Selected");
         }
         // Update the UI with the current set of unique fields
         controller.updateUIWithFields(generateFields.getUniqueFields());
