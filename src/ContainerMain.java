@@ -13,7 +13,12 @@ public class ContainerMain extends Application {
     public void start(Stage stage) throws Exception {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("assets/FormFlowComponent1.fxml"));
         Parent root = loader.load();
-        Controller.giveStage(stage); //giving the controller the stage so that we can use popups like uploading pdfs
+        Controller controller = loader.getController();
+        Initializer initializer = controller.getInitializer();
+        initializer.setController(controller);
+
+
+        //Controller.giveStage(stage); //giving the controller the stage so that we can use popups like uploading pdfs
 
         Scene scene = new Scene(root);
 

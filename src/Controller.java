@@ -9,7 +9,10 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 
 public class Controller {
@@ -83,19 +86,22 @@ public class Controller {
     private Label rightStatusLabel;
 
     List<String> fileNames = new ArrayList<>();
-    List<ListItem> fileList= new ArrayList<>();
+    List<ListItem> fileList = new ArrayList<>();
 
     static Stage theStage;
 
     //Gets the stage from Container class
-    public static void giveStage(Stage stage) {
-        theStage = stage;
+    //public static void giveStage(Stage stage) {theStage = stage;}
+
+    private Initializer initializer = new Initializer();
+
+    public Initializer getInitializer() {
+        return initializer;
     }
 
     @FXML
-    private void initialize() {
+    void initialize() {
         //Create a folder in the users files if there already isn't one
-        Initializer initializer = new Initializer();
         initializer.createFolders();
         //load the files in the folders into the list
         initializer.loadFiles();
@@ -110,5 +116,56 @@ public class Controller {
         });
         downloadAllButton.setOnAction(actionEvent -> System.out.println("download all"));
         generateButton.setOnAction(actionEvent -> System.out.println("generate"));
+    }
+
+
+    protected void updateUIWithFields(Set<String> fields) {
+
+
+        // Clear any existing fields in the UI
+        fieldsBox.getChildren().clear();
+
+        // Initialize vertical position for the first field
+        double yPos = 10.0;
+
+        // List of descriptors to remove from the field names
+        List<String> descriptorsToRemove = Arrays.asList("Formatted", "Field", "Box", "List", "Check","Text");
+
+        for (String fullFieldName : fields) {
+            // Split the full field name into words
+            String[] words = fullFieldName.split("\\s+"); // Split on one or more spaces
+            StringBuilder cleanedFieldNameBuilder = new StringBuilder();
+
+            // Filter out the descriptors
+            for (String word : words) {
+                if (!descriptorsToRemove.contains(word)) {
+                    if (cleanedFieldNameBuilder.length() > 0) {
+                        cleanedFieldNameBuilder.append(" "); // add a space before appending the next word
+                    }
+                    cleanedFieldNameBuilder.append(word);
+                }
+            }
+
+            String cleanedFieldName = cleanedFieldNameBuilder.toString();
+            // Create a new label for the field name
+            Label label = new Label(cleanedFieldName);
+            label.setLayoutX(10); // Set X position for label
+            label.setLayoutY(yPos); // Set Y position for label
+
+            // Create a new text field for the field value
+            TextField textField = new TextField();
+            textField.setLayoutX(150); // Set X position for text field
+            textField.setLayoutY(yPos); // Set Y position for text field
+            textField.setPrefWidth(200); // Set preferred width for text field
+
+            // Increment the Y position for the next field
+            yPos += 30;
+
+            // Add the label and text field to the fieldsBox
+            fieldsBox.getChildren().addAll(label, textField);
+        }
+
+        // Update the fieldsBox scrollable area if necessary
+        fieldsBox.setPrefHeight(yPos);
     }
 }

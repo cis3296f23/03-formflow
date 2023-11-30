@@ -8,5 +8,10 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" exported="" name="JavaFX Lib" level="project" />
+    <orderEntry type="library" name="lib" level="project" />
+    <orderEntry type="library" name="pdfbox-2.0.30" level="project" />
+    <orderEntry type="library" name="ApachePDF Box" level="project" />
+    <orderEntry type="library" name="commons-logging-1.2" level="project" />
+    <orderEntry type="library" name="fontbox-2.0.30" level="project" />
   </component>
 </module>
