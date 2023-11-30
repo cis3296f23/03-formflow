@@ -8,41 +8,17 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 
 public class Controller {
-    @FXML
-    private VBox rootVBox;
-
-    @FXML
-    private MenuBar menuBar;
-
-    @FXML
-    private SplitPane splitPane;
-
-    // Fields Pane
-    @FXML
-    private Pane fieldsPane;
-
-    @FXML
-    private Label fieldsLabel;
-
-    @FXML
-    private ScrollPane fieldsScrollPane;
 
     @FXML
     private AnchorPane fieldsBox;
-
-    @FXML
-    private ScrollPane downloadableFilesScrollPane;
-
-    @FXML
-    private AnchorPane downloadableFilesBox;
 
     @FXML
     private Button generateButton;
@@ -50,57 +26,24 @@ public class Controller {
     @FXML
     private Button downloadAllButton;
 
-    // Forms Pane
-    @FXML
-    private Pane formsPane;
-
-    @FXML
-    private AnchorPane formsBox;
-
-    @FXML
-    private Label formsLabel;
-
     @FXML
     private Button uploadButton;
 
     @FXML
     private ListView formListView;
 
-    @FXML
-    private ScrollPane fileNameListScrollPane;
-
-    @FXML
-    private AnchorPane fileNameList;
-
-    // Status Bar
-    @FXML
-    private HBox statusBar;
-
-    @FXML
-    private Label leftStatusLabel;
-
-    @FXML
-    private Pane statusPane;
-
-    @FXML
-    private Label rightStatusLabel;
-
-    List<String> fileNames = new ArrayList<>();
-    List<ListItem> fileList = new ArrayList<>();
-
     static Stage theStage;
 
-    //Gets the stage from Container class
-    //public static void giveStage(Stage stage) {theStage = stage;}
-
-    private Initializer initializer = new Initializer();
+    private final Initializer initializer = new Initializer();
 
     public Initializer getInitializer() {
         return initializer;
     }
 
+
+
     @FXML
-    void initialize() {
+    void initialize() throws IOException {
         //Create a folder in the users files if there already isn't one
         initializer.createFolders();
         //load the files in the folders into the list
@@ -111,7 +54,11 @@ public class Controller {
         uploadButton.setOnAction(actionEvent -> {
             //add a new file to the list
             initializer.uploadNewFile(theStage); //add new files to the folder
-            initializer.loadFiles(); //load the files in the folder into the list
+            try {
+                initializer.loadFiles(); //load the files in the folder into the list
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
             initializer.populateFileNameList(formListView); //display the list on the ui
         });
         downloadAllButton.setOnAction(actionEvent -> System.out.println("download all"));

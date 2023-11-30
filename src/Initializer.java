@@ -9,6 +9,12 @@ import javafx.scene.layout.Priority;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.common.PDRectangle;
+import org.apache.pdfbox.pdmodel.interactive.annotation.PDAnnotation;
+import org.apache.pdfbox.pdmodel.interactive.annotation.PDAnnotationWidget;
+import org.apache.pdfbox.pdmodel.interactive.form.PDAcroForm;
+import org.apache.pdfbox.pdmodel.interactive.form.PDField;
 
 
 import java.io.File;
@@ -58,7 +64,7 @@ public class Initializer {
         }
     }
 
-    public void loadFiles() {
+    public void loadFiles() throws IOException {
         //get the files that already exist in the folders and add them to the data structure
         File folder = new File(mainFolder, subFolder1);
         if (folder.exists() && folder.isDirectory()) { //make sure you have the right folder
@@ -68,8 +74,24 @@ public class Initializer {
                     if (file.isFile() && file.getName().toLowerCase().endsWith(fileExtension)) { // check file validity and extension
                         if (uniqueFileNames.add(file.getName())) { // see if the file name is unique to what is already in the list
                             System.out.println("StructuredFiles: Adding file: " + file.getName());
+                            //get the fields if there are any
+                            List<PDFieldWithLocation> fieldsList = new ArrayList<>();
+                            try (PDDocument document = PDDocument.load(file)) {
+                                PDAcroForm acroForm = document.getDocumentCatalog().getAcroForm();
+                                if (acroForm != null) {
+                                    for (PDField field : acroForm.getFields()){
+                                        List<PDAnnotationWidget> annotations = field.getWidgets();
+                                        if (!annotations.isEmpty()) {
+                                            PDAnnotationWidget widget = annotations.get(0); // Assuming the first widget represents the field appearance
+                                            PDRectangle rect = widget.getRectangle();
+                                            fieldsList.add(new PDFieldWithLocation(field, rect));
+                                        }
+                                    }
+                                    System.out.println("FieldsLsit:" + fieldsList);
+                                }
+                            }
                             //add the file to the structured file List
-                            StructuredFiles.add(new StructuredFile(file.getName(), file, "placeholder"));
+                            StructuredFiles.add(new StructuredFile(file.getName(), file, fieldsList));
                         }
                     }
                 }
@@ -78,7 +100,7 @@ public class Initializer {
     }
 
     public void populateFileNameList(ListView listView) {
-        listView.getItems().clear(); //clear the list so we don't have to check what's new
+        listView.getItems().clear(); //clear the list o we don't have to check what's new
         savedListView = listView; //save the list view so that internal methods can reference it
         for (StructuredFile file : StructuredFiles) { //iterate through all the files in structured file list
             // checkbox to select files and make fields appear
@@ -97,9 +119,13 @@ public class Initializer {
             Button trash = new Button("✖");
             trash.setStyle("-fx-background-radius: 2em;"); //makes the button round :)
             trash.setOnAction(actionEvent -> {
-                generateFields.updateFields(file.file.getAbsolutePath(), false);
+                generateFields.updateFields(file, false);
                 controller.updateUIWithFields(generateFields.getUniqueFields());
-                removeFile(file);
+                try {
+                    removeFile(file);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
             });
 
             //combine the checkbox and its label
@@ -113,7 +139,7 @@ public class Initializer {
         }
     }
 
-    private void removeFile(StructuredFile file) {
+    private void removeFile(StructuredFile file) throws IOException {
         // Add checker to make sure user wants to delete the file (and maybe a "don't ask again" button)
         File folder = new File(mainFolder, subFolder1);
         File fileToDelete = new File(folder, String.valueOf(file.fileName));
@@ -182,14 +208,14 @@ public class Initializer {
     //handles checkbox on list view eventually
     private GenerateFields generateFields = new GenerateFields();
 
-    private void handleCheckBox(CheckBox checkBox, StructuredFile fileName) {
+    private void handleCheckBox(CheckBox checkBox, StructuredFile file) {
         // Update the unique fields based on the selection status of the checkbox
-        generateFields.updateFields(fileName.file.getAbsolutePath(), checkBox.isSelected());
+        generateFields.updateFields(file, checkBox.isSelected());
 
         if (checkBox.isSelected()) {
-            System.out.println(fileName + " Selected");
+            System.out.println(file + " Selected");
         } else {
-            System.out.println(fileName + " Un-Selected");
+            System.out.println(file + " Un-Selected");
         }
         // Update the UI with the current set of unique fields
         controller.updateUIWithFields(generateFields.getUniqueFields());
