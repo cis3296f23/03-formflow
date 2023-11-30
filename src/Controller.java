@@ -9,8 +9,10 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 
 public class Controller {
@@ -100,7 +102,6 @@ public class Controller {
     @FXML
     void initialize() {
         //Create a folder in the users files if there already isn't one
-
         initializer.createFolders();
         //load the files in the folders into the list
         initializer.loadFiles();
@@ -127,9 +128,27 @@ public class Controller {
         // Initialize vertical position for the first field
         double yPos = 10.0;
 
-        for (String fieldName : fields) {
+        // List of descriptors to remove from the field names
+        List<String> descriptorsToRemove = Arrays.asList("Formatted", "Field", "Box", "List", "Check","Text");
+
+        for (String fullFieldName : fields) {
+            // Split the full field name into words
+            String[] words = fullFieldName.split("\\s+"); // Split on one or more spaces
+            StringBuilder cleanedFieldNameBuilder = new StringBuilder();
+
+            // Filter out the descriptors
+            for (String word : words) {
+                if (!descriptorsToRemove.contains(word)) {
+                    if (cleanedFieldNameBuilder.length() > 0) {
+                        cleanedFieldNameBuilder.append(" "); // add a space before appending the next word
+                    }
+                    cleanedFieldNameBuilder.append(word);
+                }
+            }
+
+            String cleanedFieldName = cleanedFieldNameBuilder.toString();
             // Create a new label for the field name
-            Label label = new Label(fieldName);
+            Label label = new Label(cleanedFieldName);
             label.setLayoutX(10); // Set X position for label
             label.setLayoutY(yPos); // Set Y position for label
 
