@@ -22,10 +22,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class Initializer {
     final String programName = "FormFlow";
@@ -220,6 +217,13 @@ public class Initializer {
         // Update the UI with the current set of unique fields
         controller.updateUIWithFields(generateFields.getUniqueFields());
 
+    }
+    private final Writer writer = new Writer(); //writer class does the writing to the downloadable files
+    private Set<StructuredFile> selectedFiles = new HashSet<>(); //this is to hold the files that are selected
+    public void generate(List<DisplayedFields> displayedFields) throws IOException { //iterate through the selected files and write to each one of them the users input
+        for(StructuredFile file : selectedFiles){
+            writer.write(file, displayedFields);
+        }
     }
 
 

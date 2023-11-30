@@ -42,6 +42,8 @@ public class Controller {
 
 
 
+    List<DisplayedFields> displayedFields = new ArrayList<>();
+
     @FXML
     void initialize() throws IOException {
         //Create a folder in the users files if there already isn't one
@@ -62,9 +64,11 @@ public class Controller {
             initializer.populateFileNameList(formListView); //display the list on the ui
         });
         downloadAllButton.setOnAction(actionEvent -> System.out.println("download all"));
-        generateButton.setOnAction(actionEvent -> System.out.println("generate"));
+        generateButton.setOnAction(actionEvent -> {
+            initializer.generate(displayedFields);
+            System.out.println("generate");
+        });
     }
-
 
     protected void updateUIWithFields(Set<String> fields) {
 
@@ -105,6 +109,8 @@ public class Controller {
             textField.setLayoutY(yPos); // Set Y position for text field
             textField.setPrefWidth(200); // Set preferred width for text field
 
+            //adding a reference to the field to this list so that we can reference what the user inputs
+            displayedFields.add(new DisplayedFields(fullFieldName, cleanedFieldName, textField));
             // Increment the Y position for the next field
             yPos += 30;
 
