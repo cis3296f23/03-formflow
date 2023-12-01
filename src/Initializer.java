@@ -1,17 +1,12 @@
 package src;
 
-import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
-import org.apache.pdfbox.pdmodel.interactive.annotation.PDAnnotation;
 import org.apache.pdfbox.pdmodel.interactive.annotation.PDAnnotationWidget;
 import org.apache.pdfbox.pdmodel.interactive.form.PDAcroForm;
 import org.apache.pdfbox.pdmodel.interactive.form.PDField;
@@ -26,6 +21,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class Initializer {
     final String programName = "FormFlow";
@@ -99,10 +95,10 @@ public class Initializer {
         }
     }
 
-    public void populateFileNameList(ListView listView) {
+    public void populateFileNameList(ListView listView, List<StructuredFile> files) {
         listView.getItems().clear(); //clear the list o we don't have to check what's new
         savedListView = listView; //save the list view so that internal methods can reference it
-        for (StructuredFile file : StructuredFiles) { //iterate through all the files in structured file list
+        for (StructuredFile file : files) { //iterate through all the files in structured file list
             // checkbox to select files and make fields appear
             CheckBox checkBox = new CheckBox();
             checkBox.setOnAction(actionEvent -> handleCheckBox(checkBox, file));
@@ -139,6 +135,27 @@ public class Initializer {
         }
     }
 
+    public void searchFiles(String searchText) {
+        List<StructuredFile> filteredFiles = new ArrayList<>();
+
+        for (StructuredFile file : StructuredFiles) {
+            // Check if the file name contains the search text (case-insensitive)
+            if (file.fileName.toLowerCase().contains(searchText.toLowerCase())) {
+                filteredFiles.add(file);
+            }
+        }
+
+        // Update the list view with the filtered files
+        populateFileNameList((ListView) filteredFiles, filteredFiles);
+    }
+    public List<StructuredFile> filterFiles(String searchText) {
+        List<StructuredFile> filteredFiles = StructuredFiles.stream()
+                .filter(file -> file.fileName.toLowerCase().contains(searchText.toLowerCase()))
+                .collect(Collectors.toList());
+        populateFileNameList(savedListView, filteredFiles);
+        return filteredFiles;
+    }
+
     private void removeFile(StructuredFile file) throws IOException {
         // Add checker to make sure user wants to delete the file (and maybe a "don't ask again" button)
         File folder = new File(mainFolder, subFolder1);
@@ -160,7 +177,7 @@ public class Initializer {
 
         //reload the files and the list view
         loadFiles();
-        populateFileNameList(savedListView);
+        populateFileNameList(savedListView, filteredFiles);
     }
 
     public void uploadNewFile(Stage stage) {

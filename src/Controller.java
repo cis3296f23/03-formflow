@@ -3,13 +3,9 @@ package src;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
@@ -32,6 +28,9 @@ public class Controller {
     @FXML
     private ListView formListView;
 
+    @FXML
+    private TextField searchBar;
+
     static Stage theStage;
 
     private final Initializer initializer = new Initializer();
@@ -48,8 +47,12 @@ public class Controller {
         initializer.createFolders();
         //load the files in the folders into the list
         initializer.loadFiles();
+        searchBar.textProperty().addListener((observable, oldValue, newValue) -> {
+            List<StructuredFile> filteredFiles = initializer.filterFiles(newValue);
+            initializer.populateFileNameList(savedListView, filteredFiles);
+        });
         //display the list on the ui
-        initializer.populateFileNameList(formListView);
+        initializer.populateFileNameList(formListView, filteredFiles);
         //upload button should prompt user to enter files
         uploadButton.setOnAction(actionEvent -> {
             //add a new file to the list
@@ -59,7 +62,10 @@ public class Controller {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-            initializer.populateFileNameList(formListView); //display the list on the ui
+            initializer.populateFileNameList(formListView, filteredFiles); //display the list on the ui
+        });
+        searchBar.textProperty().addListener((observable, oldValue, newValue) -> {
+            initializer.searchFiles(newValue);
         });
         downloadAllButton.setOnAction(actionEvent -> System.out.println("download all"));
         generateButton.setOnAction(actionEvent -> System.out.println("generate"));
