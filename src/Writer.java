@@ -39,9 +39,10 @@ public class Writer {
                 }
             }
             contentStream.close(); //finished writing
-            File completedPDF = new File(saveFolder.getAbsolutePath()); //get the file path where it will save the file
+            File completedPDF = new File(saveFolder.getAbsolutePath(), file.file.getName()); //get the file path where it will save the file
             System.out.println("PATH TO OG FILE:" + file.file.getAbsolutePath());
             System.out.println("PATH TO NEW FILE:" + completedPDF.getAbsolutePath());
+            completedPDF.createNewFile();
             Path path1 = Path.of(file.file.getAbsolutePath());
             Path path2 = Path.of(completedPDF.getAbsolutePath());
             Files.copy(path1, path2, StandardCopyOption.REPLACE_EXISTING);
