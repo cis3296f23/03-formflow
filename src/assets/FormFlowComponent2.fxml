@@ -61,11 +61,11 @@
                         </Label>
                         <ScrollPane layoutX="10.0" layoutY="39.0" prefHeight="475.0" prefWidth="284.0">
                             <content>
-                                <AnchorPane id="Content" fx:id="fieldsBox" minHeight="-1.0" minWidth="-1.0" prefHeight="470.0" prefWidth="283.0" />
+                                <AnchorPane id="assets" fx:id="fieldsBox" minHeight="-1.0" minWidth="-1.0" prefHeight="470.0" prefWidth="283.0" />
                             </content>
                         </ScrollPane>
-                        <Button fx:id="generateButton" layoutX="112.0" layoutY="514.0" mnemonicParsing="false" text="Submit" />
-                  <AnchorPane layoutX="309.0" layoutY="36.0" prefHeight="506.0" prefWidth="575.0" />
+                        <Button id="submit" fx:id="generateButton" layoutX="112.0" layoutY="514.0" mnemonicParsing="false" text="Submit" />
+                  <AnchorPane id="forms" layoutX="309.0" layoutY="36.0" prefHeight="506.0" prefWidth="575.0" />
                   <Label alignment="CENTER" layoutX="309.0" layoutY="14.0" prefHeight="23.0" prefWidth="98.0" style="&#10;" text="Forms" textAlignment="CENTER" wrapText="false">
                      <font>
                         <Font size="18.0" fx:id="x111" />

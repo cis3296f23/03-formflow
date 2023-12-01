@@ -66,7 +66,6 @@ public class Component2Controller {
         //load the files in the folders into the list
 //        initializer.loadFiles(loadingExistingDocument);
         //display the list on the ui
-
     }
 
     public static void loadingExistingDocument() throws IOException {
