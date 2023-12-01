@@ -36,9 +36,16 @@ public class Controller {
 
     private final Initializer initializer = new Initializer();
 
+    @FXML
+    private TextField searchBar;
+
+
+
     public Initializer getInitializer() {
         return initializer;
     }
+
+
 
 
 
@@ -59,11 +66,18 @@ public class Controller {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-            initializer.populateFileNameList(formListView); //display the list on the ui
+            // Display the updated list on the UI
+            initializer.populateFileNameList(formListView);
+        });
+        searchBar.setOnKeyReleased(event -> {
+            String searchText = searchBar.getText();
+            // Display the filtered list on the UI
+            initializer.populateFileNameList(formListView, searchText);
         });
         downloadAllButton.setOnAction(actionEvent -> System.out.println("download all"));
         generateButton.setOnAction(actionEvent -> System.out.println("generate"));
     }
+
 
 
     protected void updateUIWithFields(Set<String> fields) {
