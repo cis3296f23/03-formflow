@@ -203,6 +203,7 @@ public class Initializer {
     }
 
     //handles checkbox on list view eventually
+    private Set<StructuredFile> selectedFiles = new HashSet<>(); //this is to hold the files that are selected
     private GenerateFields generateFields = new GenerateFields();
 
     private void handleCheckBox(CheckBox checkBox, StructuredFile file) {
@@ -211,15 +212,16 @@ public class Initializer {
 
         if (checkBox.isSelected()) {
             System.out.println(file + " Selected");
+            selectedFiles.add(file);
         } else {
             System.out.println(file + " Un-Selected");
+            selectedFiles.remove(file);
         }
         // Update the UI with the current set of unique fields
         controller.updateUIWithFields(generateFields.getUniqueFields());
 
     }
     private final Writer writer = new Writer(); //writer class does the writing to the downloadable files
-    private Set<StructuredFile> selectedFiles = new HashSet<>(); //this is to hold the files that are selected
     public void generate(List<DisplayedFields> displayedFields) throws IOException { //iterate through the selected files and write to each one of them the users input
         for(StructuredFile file : selectedFiles){
             writer.write(file, displayedFields);

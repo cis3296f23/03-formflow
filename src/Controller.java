@@ -65,7 +65,11 @@ public class Controller {
         });
         downloadAllButton.setOnAction(actionEvent -> System.out.println("download all"));
         generateButton.setOnAction(actionEvent -> {
-            initializer.generate(displayedFields);
+            try {
+                initializer.generate(displayedFields);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
             System.out.println("generate");
         });
     }
