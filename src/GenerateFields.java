@@ -1,25 +1,22 @@
 package src;
 
-import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.pdmodel.interactive.form.PDAcroForm;
-import org.apache.pdfbox.pdmodel.interactive.form.PDField;
 
-import java.io.File;
+import org.apache.pdfbox.pdmodel.interactive.form.PDField;
+import org.apache.pdfbox.pdmodel.interactive.form.PDNonTerminalField;
+
+
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class GenerateFields {
 
-    // A Set to store unique field names found in PDF documents
+    // A set to store unique field names from the PDF
     private Set<String> uniqueFields = new HashSet<>();
 
-    /**
-     * Updates the set of unique fields based on whether a file is selected or not.
-     * If the file is selected, adds its fields to the set, otherwise removes them.
-     *
-     * @param isSelected Flag indicating whether the file is selected.
-     */
+    // Updates the set of unique fields based on the selection of the file
     public void updateFields(StructuredFile file, boolean isSelected) {
         try {
             if (isSelected) {
@@ -34,37 +31,69 @@ public class GenerateFields {
         }
     }
 
-    /**
-     * Adds fields from a given PDF file to the unique fields set.
-     *
-     *
-     * @throws IOException If an error occurs while loading the PDF.
-     */
+    // Adds fields from a given PDF file to the set of unique fields
     private void addFields(StructuredFile file) throws IOException {
-        // Iterate over each field in the PDF form and add its name to the set
-        for (PDFieldWithLocation field : file.fields) {
-            uniqueFields.add(field.pdField.getPartialName());
+        // Extract fields from the structured file and add them to a list
+        List<PDField> fieldsList = new ArrayList<>();
+        for (PDFieldWithLocation pdFieldWithLocation : file.fields) {
+            fieldsList.add(pdFieldWithLocation.pdField);
+        }
+        // Process the list of fields
+        addFieldsFromList(fieldsList);
+    }
+
+    // Adds fields from a list of PDFields to the set of unique fields
+    private void addFieldsFromList(List<PDField> fieldsList) {
+        for (PDField field : fieldsList) {
+            try {
+                // Get the fully qualified name of the field
+                String fieldName = field.getFullyQualifiedName();
+                System.out.println("Processing field " + fieldName);
+                // Add the field name to the set of unique fields
+                uniqueFields.add(fieldName);
+                // If the field is a non-terminal field, process its children
+                if (field instanceof PDNonTerminalField) {
+                    PDNonTerminalField nonTerminalField = (PDNonTerminalField) field;
+                    addFieldsFromList(nonTerminalField.getChildren());
+                }
+            } catch (Exception e) {
+                System.out.println("Error processing field " + e.getMessage());
+            }
         }
     }
 
-    /**
-     * Removes fields found in a given PDF file from the unique fields set.
-     *
-     * @throws IOException If an error occurs while loading the PDF.
-     */
+    // Removes fields from the set of unique fields based on the given structured file
     private void removeFields(StructuredFile file) throws IOException {
-        // Iterate over each field in the PDF form and remove its name from the set
-        for (PDFieldWithLocation field : file.fields) {
-            uniqueFields.remove(field.pdField.getPartialName());
+        // Extract fields from the structured file and add them to a list
+        List<PDField> fieldsList = new ArrayList<>();
+        for (PDFieldWithLocation pdFieldWithLocation : file.fields) {
+            fieldsList.add(pdFieldWithLocation.pdField);
+        }
+        // Process the list of fields for removal
+        removeFieldsFromList(fieldsList);
+    }
 
+    // Removes fields from the set of unique fields based on a list of PDFields
+    private void removeFieldsFromList(List<PDField> fieldsList) {
+        for (PDField field : fieldsList) {
+            try {
+                // Get the fully qualified name of the field
+                String fieldName = field.getFullyQualifiedName();
+                System.out.println("Processing field " + fieldName);
+                // Remove the field name from the set of unique fields
+                uniqueFields.remove(fieldName);
+                // If the field is a non-terminal field, process its children for removal
+                if (field instanceof PDNonTerminalField) {
+                    PDNonTerminalField nonTerminalField = (PDNonTerminalField) field;
+                    removeFieldsFromList(nonTerminalField.getChildren());
+                }
+            } catch (Exception e) {
+                System.out.println("Error processing field " + e.getMessage());
+            }
         }
     }
 
-    /**
-     * Returns the set of unique fields.
-     *
-     * @return A set containing unique field names.
-     */
+    // Returns the set of unique fields
     public Set<String> getUniqueFields() {
         return uniqueFields;
     }

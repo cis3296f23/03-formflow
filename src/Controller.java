@@ -1,18 +1,25 @@
 package src;
 
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+
+import java.awt.*;
+import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.*;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 
@@ -44,6 +51,9 @@ public class Controller {
 
     @FXML
     private AnchorPane downloadableFilesBox;
+
+    @FXML
+    private VBox pdfListVBox;
 
     @FXML
     private Button generateButton;
@@ -120,7 +130,13 @@ public class Controller {
             initializer.populateFileNameList(formListView); //display the list on the ui
         });
         downloadAllButton.setOnAction(actionEvent -> System.out.println("download all"));
-        generateButton.setOnAction(actionEvent -> System.out.println("generate"));
+        generateButton.setOnAction(actionEvent -> {
+            try {
+                generateAndDisplayPDF();
+            } catch (Exception e) {
+                e.printStackTrace(); // Handle exception appropriately
+            }
+        });
     }
 
 
@@ -144,7 +160,7 @@ public class Controller {
             // Filter out the descriptors
             for (String word : words) {
                 if (!descriptorsToRemove.contains(word)) {
-                    if (cleanedFieldNameBuilder.length() > 0) {
+                    if (!cleanedFieldNameBuilder.isEmpty()) {
                         cleanedFieldNameBuilder.append(" "); // add a space before appending the next word
                     }
                     cleanedFieldNameBuilder.append(word);
@@ -159,6 +175,7 @@ public class Controller {
 
             // Create a new text field for the field value
             TextField textField = new TextField();
+            textField.setId(cleanedFieldName.replace(" ", "_"));
             textField.setLayoutX(150); // Set X position for text field
             textField.setLayoutY(yPos); // Set Y position for text field
             textField.setPrefWidth(200); // Set preferred width for text field
@@ -173,4 +190,66 @@ public class Controller {
         // Update the fieldsBox scrollable area if necessary
         fieldsBox.setPrefHeight(yPos);
     }
+
+    private void generateAndDisplayPDF() throws IOException {
+        // Collecting data from all TextField elements in the fieldsBox
+        Map<String, String> formData = new HashMap<>();
+        for (Node node : fieldsBox.getChildren()) {
+            if (node instanceof TextField) {
+                TextField textField = (TextField) node;
+                formData.put(textField.getId(), textField.getText());
+            }
+        }
+
+        // Defining the directory to save the PDF
+        String pdfDir = "PDFs";
+        File dir = new File(pdfDir);
+
+        // Check if directory exists, if not, create it
+        if (!dir.exists()) {
+            dir.mkdirs(); // Create the directory if it doesn't exist
+            System.out.println("PDF directory path: " + dir.getAbsolutePath());
+        }
+
+        // Throw an IOException if the directory could not be created
+        if (!dir.exists() && !dir.mkdirs()) {
+            throw new IOException("Failed to create directory: " + dir.getAbsolutePath());
+        }
+
+        // Building the full path for the PDF file
+        String pdfFullPath = pdfDir + File.separator + "generated.pdf";
+
+        // Generate the PDF with the collected form data
+        new Writer().generatePDF(formData, pdfFullPath);
+
+        // Creating a label with the name of the generated PDF file
+        File pdfFile = new File(pdfFullPath);
+        Label pdfLabel = new Label(pdfFile.getName());
+
+        // Adding the label to the UI's VBox for display
+        pdfListVBox.getChildren().add(pdfLabel);
+
+        // Attempt to open the generated PDF file
+        openPDF(pdfFullPath);
+    }
+
+
+    private void openPDF(String pdfPath) {
+        File pdfFile = new File(pdfPath);
+        if (pdfFile.exists() && Desktop.isDesktopSupported()) {
+            try {
+                Desktop.getDesktop().open(pdfFile);
+            } catch (IOException ex) {
+                ex.printStackTrace(); // Handle exception
+                // Show error message to user
+            }
+        } else {
+            // File doesn't exist or Desktop is not supported
+            // Show error message or alternative method to open PDF
+        }
+    }
+
+
+
+
 }
