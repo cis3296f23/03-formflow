@@ -34,13 +34,18 @@ public class Initializer {
     final String subFolder3 = "Data";
     final String fileExtension = ".pdf";
 
-    final String homePath = System.getProperty("user.home");
+    final String homePath = "C:\\Users\\shafi\\OneDrive";
     final File documentsPath = new File(homePath, "Documents");
     final File mainFolder = new File(documentsPath.getAbsolutePath(), programName);
+    final String completedPdfsPath = new File(mainFolder, subFolder2).getAbsolutePath();
+
 
     Set<String> uniqueFileNames = new HashSet<>();
     List<StructuredFile> StructuredFiles = new ArrayList<>();
     ListView savedListView;
+
+    List<StructuredFile> selectedFiles = new ArrayList<>();
+
 
     private Controller controller;
 
@@ -208,14 +213,16 @@ public class Initializer {
     //handles checkbox on list view eventually
     private GenerateFields generateFields = new GenerateFields();
 
-    private void handleCheckBox(CheckBox checkBox, StructuredFile fileName) {
+    private void handleCheckBox(CheckBox checkBox, StructuredFile file) {
         // Update the unique fields based on the selection status of the checkbox
-        generateFields.updateFields(fileName, checkBox.isSelected());
+        generateFields.updateFields(file, checkBox.isSelected());
 
         if (checkBox.isSelected()) {
-            System.out.println(fileName + " Selected");
+            selectedFiles.add(file);
+            System.out.println(file + " Selected");
         } else {
-            System.out.println(fileName + " Un-Selected");
+            selectedFiles.remove(file);
+            System.out.println(file + " Un-Selected");
         }
         // Update the UI with the current set of unique fields
         controller.updateUIWithFields(generateFields.getUniqueFields());

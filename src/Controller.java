@@ -101,8 +101,6 @@ public class Controller {
 
     static Stage theStage;
 
-    //Gets the stage from Container class
-    //public static void giveStage(Stage stage) {theStage = stage;}
 
     private Initializer initializer = new Initializer();
 
@@ -137,6 +135,7 @@ public class Controller {
                 e.printStackTrace(); // Handle exception appropriately
             }
         });
+
     }
 
 
@@ -150,7 +149,7 @@ public class Controller {
         double yPos = 10.0;
 
         // List of descriptors to remove from the field names
-        List<String> descriptorsToRemove = Arrays.asList("Formatted", "Field", "Box", "List", "Check","Text");
+        List<String> descriptorsToRemove = Arrays.asList("Formatted", "Field", "Box", "List", "Check", "Text");
 
         for (String fullFieldName : fields) {
             // Split the full field name into words
@@ -175,7 +174,7 @@ public class Controller {
 
             // Create a new text field for the field value
             TextField textField = new TextField();
-            textField.setId(cleanedFieldName.replace(" ", "_"));
+            textField.setId(fullFieldName);
             textField.setLayoutX(150); // Set X position for text field
             textField.setLayoutY(yPos); // Set Y position for text field
             textField.setPrefWidth(200); // Set preferred width for text field
@@ -195,61 +194,58 @@ public class Controller {
         // Collecting data from all TextField elements in the fieldsBox
         Map<String, String> formData = new HashMap<>();
         for (Node node : fieldsBox.getChildren()) {
+            // Check if the node is a TextField to extract data
             if (node instanceof TextField) {
                 TextField textField = (TextField) node;
+                // Store the field's ID and its text value in formData
                 formData.put(textField.getId(), textField.getText());
             }
         }
 
-        // Defining the directory to save the PDF
-        String pdfDir = "PDFs";
-        File dir = new File(pdfDir);
+        // Iterate through each selected file for PDF generation
+        for (StructuredFile file : initializer.selectedFiles) {
+            // Get the absolute path of the original PDF file
+            String originalPdfPath = file.file.getAbsolutePath();
+            // Extract the file name from the file path
+            String fileName = file.file.getName();
+            // Construct the path where the completed PDF will be saved
+            String completedPdfPath = initializer.completedPdfsPath + File.separator + fileName;
 
-        // Check if directory exists, if not, create it
-        if (!dir.exists()) {
-            dir.mkdirs(); // Create the directory if it doesn't exist
-            System.out.println("PDF directory path: " + dir.getAbsolutePath());
+            // Generate the PDF with the provided form data
+            new Writer().generatePDF(formData, originalPdfPath, completedPdfPath);
+
+            // Create a file object for the newly generated PDF
+            File pdfFile = new File(completedPdfPath);
+            // Create a label for the PDF file which will be displayed in the UI
+            Label pdfLabel = new Label(pdfFile.getName());
+
+            // Set an event handler for mouse click on the PDF label
+            pdfLabel.setOnMouseClicked(event -> {
+                try {
+                    // Attempt to open the PDF when the label is clicked
+                    openPDF(completedPdfPath);
+                } catch (Exception e) {
+                    // Print stack trace and display error message if PDF fails to open
+                    e.printStackTrace();
+                    System.out.println("Error opening this Pdf file " + pdfFile.getName() + ": " + e.getMessage());
+                }
+            });
+
+            // Add the label to the VBox in the UI to display it
+            pdfListVBox.getChildren().add(pdfLabel);
         }
-
-        // Throw an IOException if the directory could not be created
-        if (!dir.exists() && !dir.mkdirs()) {
-            throw new IOException("Failed to create directory: " + dir.getAbsolutePath());
-        }
-
-        // Building the full path for the PDF file
-        String pdfFullPath = pdfDir + File.separator + "generated.pdf";
-
-        // Generate the PDF with the collected form data
-        new Writer().generatePDF(formData, pdfFullPath);
-
-        // Creating a label with the name of the generated PDF file
-        File pdfFile = new File(pdfFullPath);
-        Label pdfLabel = new Label(pdfFile.getName());
-
-        // Adding the label to the UI's VBox for display
-        pdfListVBox.getChildren().add(pdfLabel);
-
-        // Attempt to open the generated PDF file
-        openPDF(pdfFullPath);
     }
 
 
-    private void openPDF(String pdfPath) {
+    private void openPDF(String pdfPath) throws IOException {
         File pdfFile = new File(pdfPath);
         if (pdfFile.exists() && Desktop.isDesktopSupported()) {
-            try {
-                Desktop.getDesktop().open(pdfFile);
-            } catch (IOException ex) {
-                ex.printStackTrace(); // Handle exception
-                // Show error message to user
-            }
+            Desktop.getDesktop().open(pdfFile);
         } else {
             // File doesn't exist or Desktop is not supported
-            // Show error message or alternative method to open PDF
+            throw new IOException("Unable to open file: " + pdfPath);
         }
     }
-
-
 
 
 }

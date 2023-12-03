@@ -1,50 +1,59 @@
 package src;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Map;
 import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.pdmodel.PDPage;
-import org.apache.pdfbox.pdmodel.PDPageContentStream;
-import org.apache.pdfbox.pdmodel.font.PDType1Font;
+import org.apache.pdfbox.pdmodel.interactive.form.PDAcroForm;
+import org.apache.pdfbox.pdmodel.interactive.form.PDCheckBox;
+import org.apache.pdfbox.pdmodel.interactive.form.PDField;
 
 public class Writer {
 
-    public void generatePDF(Map<String, String> formData, String filePath) {
-        try (PDDocument document = new PDDocument()) {
-            // Create a new PDF page and add it to the document
-            PDPage page = new PDPage();
-            document.addPage(page);
+    public void generatePDF(Map<String, String> formData, String originalFilePath, String completedFilePath) {
+        try (PDDocument document = PDDocument.load(new File(originalFilePath))) {
+            // Access the form fields (AcroForm) of the PDF document
+            PDAcroForm acroForm = document.getDocumentCatalog().getAcroForm();
 
-            // Create a content stream to write content in the PDF page
-            try (PDPageContentStream contentStream = new PDPageContentStream(document, page)) {
-                // Set the font and font size for the text to be written
-                contentStream.setFont(PDType1Font.HELVETICA, 12);
-
-                // Starting Y position for writing, offset from the top of the page
-                float yStart = page.getMediaBox().getHeight() - 50;
-
-                // Loop through each entry in the form data
+            // Check if the document contains an AcroForm
+            if (acroForm != null) {
+                // Iterate over each entry in the formData map
                 for (Map.Entry<String, String> entry : formData.entrySet()) {
-                    // Begin text writing in content stream
-                    contentStream.beginText();
-                    // Move to the specified offset position
-                    contentStream.newLineAtOffset(50, yStart);
-                    // Prepare the text to write (Key: Value)
-                    String text = entry.getKey() + ": " + entry.getValue();
-                    // Write the text to the content stream
-                    contentStream.showText(text);
-                    // End text writing
-                    contentStream.endText();
-                    // Move yStart up to the next line
-                    yStart -= 20;
-                }
-            }
+                    // Retrieve the field from the PDF using the field name
+                    PDField field = acroForm.getField(entry.getKey());
 
-            // Save the document to the specified file path
-            document.save(filePath);
-        } catch (Exception e) {
-            // Print stack trace if there is any exception
+                    // Check if the field was found in the PDF
+                    if (field != null) {
+                        // Skip setting the value if the provided data is empty or null
+                        if (entry.getValue() == null || entry.getValue().isEmpty()) {
+                            continue; // Skip to the next field
+                        }
+
+                        // Check if the field is a checkbox
+                        if (field instanceof PDCheckBox) {
+                            PDCheckBox checkBox = (PDCheckBox) field;
+                            // Set the checkbox to "On" or "Off" based on the provided value
+                            String value = entry.getValue().equalsIgnoreCase("true") ? checkBox.getOnValue() : "Off";
+                            checkBox.setValue(value);
+                        } else {
+                            // For other field types, set the value directly
+                            field.setValue(entry.getValue());
+                        }
+                    } else {
+                        // If the field is not found in the PDF, log a message
+                        System.out.println("Field not found in the PDF: " + entry.getKey());
+                    }
+                }
+                // Save the modified document to the specified path
+                document.save(completedFilePath);
+            } else {
+                // Log a message if the PDF does not contain an AcroForm
+                System.out.println("No AcroForm found in the PDF.");
+            }
+        } catch (IOException e) {
+            // Handle exceptions related to file I/O
             e.printStackTrace();
         }
     }
+
 }
