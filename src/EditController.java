@@ -1,20 +1,23 @@
 package src;
 
 // javaFX imports
+
 import javafx.fxml.FXML;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-// PDF Box imports
 import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.pdmodel.PDPage;
-// Java file handling
+
+import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
 
-public class Component2Controller {
+public class EditController {
     @FXML
     private VBox rootVBox;
 
@@ -62,26 +65,32 @@ public class Component2Controller {
     private void initialize() {
         //Create a folder in the users files if there already isn't one
         Initializer initializer = new Initializer();
-        initializer.createFolders();
+        // setup scene
+
+
         //load the files in the folders into the list
 //        initializer.loadFiles(loadingExistingDocument);
         //display the list on the ui
     }
 
-    public static void loadingExistingDocument() throws IOException {
+    public static void loadExistingDocument() throws IOException {
         //Load existing pdf doc
         File pdfFile = new File("res/OoPdfFormExample.pdf");
-        PDDocument document = null;
-
-        document = PDDocument.load(pdfFile);
-
+        PDDocument document = PDDocument.load(pdfFile);
         System.out.println("PDF Loaded");
-
-        document.addPage(new PDPage());
-
-        document.save("res/OoPdfFormExample.pdf");
-
         //Closing the pdf doc
         document.close();
     }
+
+    private Parent root;
+
+
+    public void switchScene(ActionEvent event) throws IOException {
+//        Parent root = FXMLLoader.load(getClass().getResource("FormFlowComponent2.fxml"));
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+    }
+
 }
