@@ -34,13 +34,18 @@ public class Initializer {
     final String subFolder3 = "Data";
     final String fileExtension = ".pdf";
 
-    final String homePath = System.getProperty("user.home");
+    final String homePath = "C:\\Users\\shafi\\OneDrive";
     final File documentsPath = new File(homePath, "Documents");
     final File mainFolder = new File(documentsPath.getAbsolutePath(), programName);
+    final String completedPdfsPath = new File(mainFolder, subFolder2).getAbsolutePath();
+
 
     Set<String> uniqueFileNames = new HashSet<>();
     List<StructuredFile> StructuredFiles = new ArrayList<>();
     ListView savedListView;
+
+    List<StructuredFile> selectedFiles = new ArrayList<>();
+
 
     private Controller controller;
 
@@ -222,8 +227,10 @@ public class Initializer {
         generateFields.updateFields(file, checkBox.isSelected());
 
         if (checkBox.isSelected()) {
+            selectedFiles.add(file);
             System.out.println(file + " Selected");
         } else {
+            selectedFiles.remove(file);
             System.out.println(file + " Un-Selected");
         }
         // Update the UI with the current set of unique fields
