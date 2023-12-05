@@ -3,9 +3,18 @@ The product that we are developing is a Java application that assists users in f
 
 The baseline goal is scanning documents, and presenting their fields, repeated or otherwise to the user to fill out. This way the user fills out their information once to complete a series of forms that ask for the same thing. This will only be a successful project if our product design itself is good. Once we have the mechanics of the application our goal is to make it easy to use. The market is tech-savvy professionals, but it should be useable and understandable for anyone with basic computer knowledge to consider it a success. There are also features we may be able to implement to supplement the application like pre-logged user information, but for the scope of this project that may present security issues we are not equipped to deal with yet. It is something to consider if we have time at the end of the semester, which is unlikely. 
 
-![This is a screenshot.](Scrum1.png)
+These screenshots run through a FormFlow session in its current version.
+![FormFlow Comp1 unfilled](https://github.com/cis3296f23/03-formflow/assets/93154019/40591ca4-184a-48a9-abc1-8bec5dd6dacf)
+Blank new session
+![FormFlow3](https://github.com/cis3296f23/03-formflow/assets/93154019/5c0059bb-4338-4a2d-b4c1-53690a8c7088)
+Pushed Upload button and uploaded a job application and the Eagle Scout workbook
+![FormFlow4](https://github.com/cis3296f23/03-formflow/assets/93154019/a067d6db-cb8c-4180-839b-ff09b20b1200)
+Checked off the job application and the fields appeared
+![FormFlow5](https://github.com/cis3296f23/03-formflow/assets/93154019/34760299-f5a3-414e-9318-dee05fc58db7)
+Filled out three random fields and hit generate
+![FormFlow6](https://github.com/cis3296f23/03-formflow/assets/93154019/6359424a-37d0-430e-b810-5f5353e69e43)
+Opened the downloaded filled out file and found the fields where I input data
 
-![This is a screenshot.](image2.png)
 # How to run
 - Download the executable and run the app
 - You will see the FormFlow UI!
