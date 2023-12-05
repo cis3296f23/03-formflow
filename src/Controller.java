@@ -16,6 +16,10 @@ import javafx.stage.Stage;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -178,12 +182,21 @@ public class Controller {
             File pdfFile = new File(completedPdfPath);
             // Create a label for the PDF file which will be displayed in the UI
             Label pdfLabel = new Label(pdfFile.getName());
+            Path pathToDelete = Paths.get(completedPdfPath);
+            File userHomePath = new File(System.getProperty("user.home"));
+            File userDownloadsPath = new File(userHomePath.getAbsolutePath(), "Downloads");
+            String whereToSave = userDownloadsPath.getAbsolutePath() + File.separator + fileName;
+            Path downloadsFolderPath = Path.of(whereToSave);
 
             // Set an event handler for mouse click on the PDF label
             pdfLabel.setOnMouseClicked(event -> {
                 try {
                     // Attempt to open the PDF when the label is clicked
-                    openPDF(completedPdfPath);
+                    Files.copy(pathToDelete,downloadsFolderPath, StandardCopyOption.REPLACE_EXISTING);
+                    openPDF(downloadsFolderPath.toAbsolutePath().toString());
+                    Files.delete(pathToDelete);
+                    pdfListVBox.getChildren().remove(pdfLabel);
+
                 } catch (Exception e) {
                     // Print stack trace and display error message if PDF fails to open
                     e.printStackTrace();
@@ -191,8 +204,8 @@ public class Controller {
                 }
             });
 
-            // Add the label to the VBox in the UI to display it
             pdfListVBox.getChildren().add(pdfLabel);
+            // Add the label to the VBox in the UI to display it
         }
     }
 
@@ -210,15 +223,23 @@ public class Controller {
     private void openAllCompletedPDFS() throws IOException {
         for(StructuredFile file : initializer.selectedFiles){
             String completedPdfPath = initializer.completedPdfsPath + File.separator + file.file.getName();
+            Path pathToDelete = Paths.get(completedPdfPath);
+            File userHomePath = new File(System.getProperty("user.home"));
+            File userDownloadsPath = new File(userHomePath.getAbsolutePath(), "Downloads");
+            String whereToSave = userDownloadsPath.getAbsolutePath() + File.separator + file.fileName;
+            Path downloadsFolderPath = Path.of(whereToSave);
             try {
                 // Attempt to open the PDF when the label is clicked
-                openPDF(completedPdfPath);
+                Files.copy(pathToDelete,downloadsFolderPath, StandardCopyOption.REPLACE_EXISTING);
+                openPDF(downloadsFolderPath.toAbsolutePath().toString());
+                Files.delete(pathToDelete);
             } catch (Exception e) {
                 // Print stack trace and display error message if PDF fails to open
                 e.printStackTrace();
                 System.out.println("Error opening this Pdf file " + file.file.getName() + ": " + e.getMessage());
             }
         }
+        pdfListVBox.getChildren().clear();
     }
 
 
