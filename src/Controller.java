@@ -29,7 +29,6 @@ public class Controller {
     private AnchorPane fieldsBox;
 
     @FXML
-
     private ScrollPane downloadableFilesScrollPane;
 
     @FXML
@@ -57,16 +56,9 @@ public class Controller {
     @FXML
     private TextField searchBar;
 
-
-
     public Initializer getInitializer() {
         return initializer;
     }
-
-
-
-
-
     @FXML
     void initialize() throws IOException {
         //Create a folder in the users files if there already isn't one
@@ -92,7 +84,13 @@ public class Controller {
             // Display the filtered list on the UI
             initializer.populateFileNameList(formListView, searchText);
         });
-        downloadAllButton.setOnAction(actionEvent -> System.out.println("download all"));
+        downloadAllButton.setOnAction(actionEvent -> {
+            try {
+                openAllCompletedPDFS(); //open all completed pdfs that are currently checked off
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
         generateButton.setOnAction(actionEvent -> {
             try {
                 generateAndDisplayPDF();
@@ -103,11 +101,7 @@ public class Controller {
 
     }
 
-
-
     protected void updateUIWithFields(Set<String> fields) {
-
-
         // Clear any existing fields in the UI
         fieldsBox.getChildren().clear();
 
@@ -210,6 +204,20 @@ public class Controller {
         } else {
             // File doesn't exist or Desktop is not supported
             throw new IOException("Unable to open file: " + pdfPath);
+        }
+    }
+
+    private void openAllCompletedPDFS() throws IOException {
+        for(StructuredFile file : initializer.selectedFiles){
+            String completedPdfPath = initializer.completedPdfsPath + File.separator + file.file.getName();
+            try {
+                // Attempt to open the PDF when the label is clicked
+                openPDF(completedPdfPath);
+            } catch (Exception e) {
+                // Print stack trace and display error message if PDF fails to open
+                e.printStackTrace();
+                System.out.println("Error opening this Pdf file " + file.file.getName() + ": " + e.getMessage());
+            }
         }
     }
 
