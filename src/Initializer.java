@@ -105,44 +105,53 @@ public class Initializer {
     }
 
     public void populateFileNameList(ListView listView) {
+        populateFileNameList(listView, null);
+    }
+
+    public void populateFileNameList(ListView listView, String searchText) {
         listView.getItems().clear(); //clear the list o we don't have to check what's new
         savedListView = listView; //save the list view so that internal methods can reference it
-        for (StructuredFile file : StructuredFiles) { //iterate through all the files in structured file list
-            // checkbox to select files and make fields appear
-            CheckBox checkBox = new CheckBox();
-            checkBox.setOnAction(actionEvent -> handleCheckBox(checkBox, file));
-            // wrap the file name if it is too long
-            String text = file.fileName;
-            if (file.fileName.length() > 29) {
-                text = (file.fileName.substring(0, 26) + "...");
-            }
-            //create a label to hold the file name
-            Label label = new Label("  " + text); //space for indentation
-            label.setTooltip(new javafx.scene.control.Tooltip(file.fileName)); // Show the full name on hover in case it is wrapped
-
-            //trash button to remove files
-            Button trash = new Button("✖");
-            trash.setStyle("-fx-background-radius: 2em;"); //makes the button round :)
-            trash.setOnAction(actionEvent -> {
-                generateFields.updateFields(file, false);
-                controller.updateUIWithFields(generateFields.getUniqueFields());
-                try {
-                    removeFile(file);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
+        for (StructuredFile file : StructuredFiles) { //iterate through all the files in the structured file list
+            // Perform filtering based on search text
+            if (searchText == null || file.fileName.toLowerCase().contains(searchText.toLowerCase())) {
+                // checkbox to select files and make fields appear
+                CheckBox checkBox = new CheckBox();
+                checkBox.setOnAction(actionEvent -> handleCheckBox(checkBox, file));
+                // wrap the file name if it is too long
+                String text = file.fileName;
+                if (file.fileName.length() > 29) {
+                    text = (file.fileName.substring(0, 26) + "...");
                 }
-            });
+                // create a label to hold the file name
+                Label label = new Label("  " + text); // space for indentation
+                label.setTooltip(new Tooltip(file.fileName)); // Show the full name on hover in case it is wrapped
 
-            //combine the checkbox and its label
-            HBox hbox = new HBox(checkBox, label);
-            // format the entity so that trash button is on the very right
-            BorderPane bp = new BorderPane();
-            bp.setLeft(hbox);
-            bp.setRight(trash);
-            //finally add the new entity to the listview
-            listView.getItems().add(bp);
+                // trash button to remove files
+                Button trash = new Button("✖");
+                trash.setStyle("-fx-background-radius: 2em;"); // makes the button round :)
+                trash.setOnAction(actionEvent -> {
+                    generateFields.updateFields(file, false);
+                    controller.updateUIWithFields(generateFields.getUniqueFields());
+                    try {
+                        removeFile(file);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                });
+
+                // combine the checkbox and its label
+                HBox hbox = new HBox(checkBox, label);
+                // format the entity so that the trash button is on the very right
+                BorderPane bp = new BorderPane();
+                bp.setLeft(hbox);
+                bp.setRight(trash);
+                // finally, add the new entity to the ListView
+                listView.getItems().add(bp);
+            }
         }
     }
+
+
 
     private void removeFile(StructuredFile file) throws IOException {
         // Add checker to make sure user wants to delete the file (and maybe a "don't ask again" button)

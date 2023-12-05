@@ -13,40 +13,23 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-
-
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.Set;
+
 
 
 public class Controller {
-    @FXML
-    private VBox rootVBox;
-
-    @FXML
-    private MenuBar menuBar;
-
-    @FXML
-    private SplitPane splitPane;
-
-    // Fields Pane
-    @FXML
-    private Pane fieldsPane;
-
-    @FXML
-    private Label fieldsLabel;
-
-    @FXML
-    private ScrollPane fieldsScrollPane;
 
     @FXML
     private AnchorPane fieldsBox;
 
     @FXML
+
     private ScrollPane downloadableFilesScrollPane;
 
     @FXML
@@ -61,52 +44,28 @@ public class Controller {
     @FXML
     private Button downloadAllButton;
 
-    // Forms Pane
-    @FXML
-    private Pane formsPane;
-
-    @FXML
-    private AnchorPane formsBox;
-
-    @FXML
-    private Label formsLabel;
-
     @FXML
     private Button uploadButton;
 
     @FXML
     private ListView formListView;
 
-    @FXML
-    private ScrollPane fileNameListScrollPane;
-
-    @FXML
-    private AnchorPane fileNameList;
-
-    // Status Bar
-    @FXML
-    private HBox statusBar;
-
-    @FXML
-    private Label leftStatusLabel;
-
-    @FXML
-    private Pane statusPane;
-
-    @FXML
-    private Label rightStatusLabel;
-
-    List<String> fileNames = new ArrayList<>();
-    List<ListItem> fileList = new ArrayList<>();
-
     static Stage theStage;
 
+    private final Initializer initializer = new Initializer();
 
-    private Initializer initializer = new Initializer();
+    @FXML
+    private TextField searchBar;
+
+
 
     public Initializer getInitializer() {
         return initializer;
     }
+
+
+
+
 
     @FXML
     void initialize() throws IOException {
@@ -125,7 +84,13 @@ public class Controller {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-            initializer.populateFileNameList(formListView); //display the list on the ui
+            // Display the updated list on the UI
+            initializer.populateFileNameList(formListView);
+        });
+        searchBar.setOnKeyReleased(event -> {
+            String searchText = searchBar.getText();
+            // Display the filtered list on the UI
+            initializer.populateFileNameList(formListView, searchText);
         });
         downloadAllButton.setOnAction(actionEvent -> System.out.println("download all"));
         generateButton.setOnAction(actionEvent -> {
@@ -137,6 +102,7 @@ public class Controller {
         });
 
     }
+
 
 
     protected void updateUIWithFields(Set<String> fields) {

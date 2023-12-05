@@ -117,7 +117,8 @@
                       <Color red="0.624" green="0.624" blue="0.624" fx:id="x2" />
                            </textFill></Label>
                         <Button fx:id="uploadButton" layoutX="210.0" layoutY="497.0" mnemonicParsing="false" text="Upload" />
-                        <ListView fx:id="formListView" layoutX="13.0" layoutY="39.0" prefHeight="458.0" prefWidth="251.0" />
+                        <ListView fx:id="formListView" layoutX="13.0" layoutY="39.0" prefHeight="434.0" prefWidth="251.0" />
+                        <TextField fx:id="searchBar" layoutX="13.0" layoutY="472.0" prefHeight="25.0" prefWidth="251.0" />
               </children>
             </AnchorPane>
                </children>
