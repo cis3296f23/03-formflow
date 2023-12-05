@@ -1,22 +1,15 @@
 package src;
 
-import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
-import org.apache.pdfbox.pdmodel.interactive.annotation.PDAnnotation;
 import org.apache.pdfbox.pdmodel.interactive.annotation.PDAnnotationWidget;
 import org.apache.pdfbox.pdmodel.interactive.form.PDAcroForm;
 import org.apache.pdfbox.pdmodel.interactive.form.PDField;
-
-
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -34,8 +27,8 @@ public class Initializer {
     final String subFolder3 = "Data";
     final String fileExtension = ".pdf";
 
-    final String homePath = "C:\\Users\\shafi\\OneDrive";
-    final File documentsPath = new File(homePath, "Documents");
+    static final String homePath = System.getProperty("user.home");
+    final File documentsPath = new File(getDocumentsFolderPath());
     final File mainFolder = new File(documentsPath.getAbsolutePath(), programName);
     final String completedPdfsPath = new File(mainFolder, subFolder2).getAbsolutePath();
 
@@ -238,5 +231,16 @@ public class Initializer {
 
     }
 
+    private static String getDocumentsFolderPath() {
+        String osName = System.getProperty("os.name").toLowerCase();
+        // check if the OS is Windows and if onedrive is in use
+        if (osName.contains("win") && new File(homePath, "OneDrive").exists() && !(new File(homePath, "Documents").exists())) {
+            // get the documents folder inside the onedrive folder
+            return homePath + File.separator + "OneDrive" + File.separator + "Documents";
+        } else {
+            //get the documents folder inside the users home
+            return homePath + File.separator + "Documents";
+        }
+    }
 
 }
