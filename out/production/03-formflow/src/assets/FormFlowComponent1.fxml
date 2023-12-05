@@ -98,7 +98,7 @@
                   </ScrollPane>
                   <ScrollPane layoutX="10.0" layoutY="450.0" prefHeight="91.0" prefWidth="225.0">
                     <content>
-                      <AnchorPane fx:id="downloadableFilesBox" minHeight="0.0" minWidth="0.0" prefHeight="97.0" prefWidth="210.0" />
+                      <AnchorPane fx:id="downloadableFilesBox" minHeight="0.0" minWidth="0.0" prefHeight="99.0" prefWidth="206.0" />
                     </content>
                   </ScrollPane>
                   <Button fx:id="generateButton" layoutX="542.0" layoutY="425.0" mnemonicParsing="false" text="Generate" />
@@ -117,7 +117,8 @@
                       <Color red="0.624" green="0.624" blue="0.624" fx:id="x2" />
                            </textFill></Label>
                         <Button fx:id="uploadButton" layoutX="210.0" layoutY="497.0" mnemonicParsing="false" text="Upload" />
-                        <ListView fx:id="formListView" layoutX="13.0" layoutY="39.0" prefHeight="458.0" prefWidth="251.0" />
+                        <ListView fx:id="formListView" layoutX="13.0" layoutY="39.0" prefHeight="434.0" prefWidth="251.0" />
+                        <TextField fx:id="searchBar" layoutX="13.0" layoutY="472.0" prefHeight="25.0" prefWidth="251.0" />
               </children>
             </AnchorPane>
                </children>

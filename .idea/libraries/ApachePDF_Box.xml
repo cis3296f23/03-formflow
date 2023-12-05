@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="ApachePDF Box">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/libraries/ApachePDF Box" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="file://$PROJECT_DIR$/libraries/ApachePDF Box/commons-logging-1.2/apidocs" />
+    </JAVADOC>
+    <SOURCES />
+    <jarDirectory url="file://$PROJECT_DIR$/libraries/ApachePDF Box" recursive="false" />
+  </library>
+</component>
