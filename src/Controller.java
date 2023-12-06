@@ -115,10 +115,10 @@ public class Controller {
         generateButton.setOnAction(actionEvent -> System.out.println("generate"));
 
         // switchScene Btn
-        switchScene.setOnAction(actionEvent -> {
-            EditContainerMain.launch(EditContainerMain.class);
-
-        });
+//        switchScene.setOnAction(actionEvent -> {
+//            EditContainerMain.launch(EditContainerMain.class);
+//
+//        });
 
     }
 }

@@ -1,17 +1,8 @@
 package src;
 
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
-
 public class SharedData {
     private static SharedData instance;
-
-    private final StringProperty messageProperty = new SimpleStringProperty();
-
-    private SharedData(){
-        // making private constructor to ensure singleton
-
-    }
+    private SceneManager sceneManager ;
 
     public static synchronized SharedData getInstance(){
         if(instance == null){
@@ -20,20 +11,13 @@ public class SharedData {
         return instance;
     }
 
-    public String getMessage(){
-        return messageProperty.get();
+    public SceneManager getSceneManager(){
+        return sceneManager;
     }
 
-    public void setMessage(String message){
-        messageProperty.set(message);
-
+    public void setSceneManager(SceneManager manager){
+        sceneManager = manager;
     }
-
-    public StringProperty messageProperty(){
-        return messageProperty;
-    }
-
-
 
 
 }

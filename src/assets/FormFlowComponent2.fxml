@@ -2,11 +2,12 @@
 
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.paint.*?>
 <?import javafx.scene.text.*?>
 
-<VBox prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="src.EditController">
+<VBox prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="src.EditController">
     <children>
         <MenuBar VBox.vgrow="NEVER">
             <menus>
@@ -65,8 +66,11 @@
                             </content>
                         </ScrollPane>
                         <Button id="submit" fx:id="generateButton" layoutX="112.0" layoutY="514.0" mnemonicParsing="false" text="Submit" />
-                  <AnchorPane id="forms" layoutX="309.0" layoutY="36.0" prefHeight="506.0" prefWidth="575.0" />
-                  <Label alignment="CENTER" layoutX="309.0" layoutY="14.0" prefHeight="23.0" prefWidth="98.0" style="&#10;" text="Forms" textAlignment="CENTER" wrapText="false">
+                  <AnchorPane id="forms" layoutX="309.0" layoutY="36.0" prefHeight="506.0" prefWidth="575.0">
+                     <children>
+                        <ImageView fx:id="pdfView" fitHeight="497.0" fitWidth="566.0" layoutX="5.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true" />
+                     </children></AnchorPane>
+                  <Label alignment="CENTER" layoutX="309.0" layoutY="11.0" prefHeight="26.0" prefWidth="136.0" style="&#10;" text="Forms Viewer" textAlignment="CENTER" wrapText="false">
                      <font>
                         <Font size="18.0" fx:id="x111" />
                      </font>
@@ -95,5 +99,6 @@
                 <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
             </padding>
         </HBox>
+      <Button mnemonicParsing="false" text="Button" />
     </children>
 </VBox>
