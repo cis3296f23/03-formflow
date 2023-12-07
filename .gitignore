@@ -1,0 +1,33 @@
+# Compiled class file
+*.class
+
+# Compiled JavaFX application directory
+out/
+
+# IntelliJ IDEA project files
+.idea/
+
+# Eclipse project files
+.classpath
+.project
+.settings/
+
+# NetBeans project files
+nbproject/
+
+# Logs
+*.log
+
+# User-specific files
+*.iml
+*.ipr
+*.iws
+
+# macOS specific files
+.DS_Store
+
+# Windows thumbnail cache files
+Thumbs.db
+
+# Gradle files
+build/

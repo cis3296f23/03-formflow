@@ -1,8 +1,27 @@
 package src;
 
-public class Main {
+import javafx.application.Application;
+import javafx.stage.Stage;
+
+public class Main extends Application {
     public static void main(String[] args){
-        ContainerMain.launch(ContainerMain.class, args);
-        //ContainerSecondary.launch(ContainerSecondary.class, args);
+//        launch(EditContainerMain.class, args);
+          Application.launch();
+//        Stage primaryStage = ;
+//        SceneManager sceneManager = new SceneManager(primaryStage);
+//        sceneManager.loadInitialScene();
+//
+//        primaryStage.setTitle("Form Flow component 1");
+//        primaryStage.show();
+
+//        launch(args);
+    }
+
+    @Override
+    public void start(Stage primaryStage){
+        SceneManager sceneManager = new SceneManager(primaryStage);
+        sceneManager.setActiveScene(sceneManager.getSceneOne(),"Component One");
+        SharedData.getInstance().setSceneManager(sceneManager);
+
     }
 }
