@@ -7,8 +7,22 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
+/**
+ * ContainerMain is the container for component 1. The container
+ * is used to divide the UI into regions and layout components
+ * in each region.
+ * Extends the Application class
+ */
 public class ContainerMain extends Application {
-
+    /**
+     * The start method loads FormFlowComponent1.fxml creates and loads the
+     * controller. The initializer and controller are set to work with each
+     * other. Sets the stage to a Parent object named root. Then adds the
+     * FormFlow logo to the Icon portion of the stage. The start method then
+     * sets the scene, the title, and then shows the scene.
+     * @param stage
+     * @throws Exception
+     */
     @Override
     public void start(Stage stage) throws Exception {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("assets/FormFlowComponent1.fxml"));
