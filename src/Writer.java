@@ -10,6 +10,17 @@ import org.apache.pdfbox.pdmodel.interactive.form.PDField;
 
 public class Writer {
 
+    /**
+     * The generatePDF() method initially accesses the form fields (AcroForm)
+     * of the PDF document. It then checks if the document contains an AcroForm.
+     * It then iterates through formData Map where it retrieves the field from
+     * the PDF using the field name. If the field is found in the PDF it checks
+     * what kind of field it is and handles it accordingly. Once the fields have
+     * been written to, it saves the modified document to the given path.
+     * @param formData is a Map of Strings
+     * @param originalFilePath is a String
+     * @param completedFilePath is a String
+     */
     public void generatePDF(Map<String, String> formData, String originalFilePath, String completedFilePath) {
         try (PDDocument document = PDDocument.load(new File(originalFilePath))) {
             // Access the form fields (AcroForm) of the PDF document

@@ -20,6 +20,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * The Initializer class is where the back end of the program is set up.
+ * Specifically setting up the folders that FormFlow
+ */
 public class Initializer {
     final String programName = "FormFlow";
     final String subFolder1 = "BlankPDFs";
