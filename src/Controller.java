@@ -63,9 +63,34 @@ public class Controller {
     @FXML
     private TextField searchBar;
 
+    /**
+     * The getInitializer() method returns the Initializer
+     * global object.
+     * @return Initializer initializer
+     */
     public Initializer getInitializer() {
         return initializer;
     }
+
+    /**
+     * The initialize() method in the controller uses the Initializer to set up
+     * the back end of the program. First it creates a folder in the user files
+     * with initializer.createFolders(). It then loads the files into the list
+     * with initializer.loadFiles(). It then uses initializer.populateFileNameList()
+     * passing the global ListView formListView, which displays the list of forms
+     * in the UI. The method then sets up an upload button that prompts users to
+     * enter files from their filesystem upon clicking it by setting Button uploadButton
+     * with the method setOnAction(). Upon the upload button being clicked and
+     * files being selected the initializer calls the method uploadNewFile() passing
+     * Stage theStage and loads the updated folder into the list with loadFiles()
+     * checking the input file type for any errors. The initialize method of the
+     * controller also sets up the search bar in component 1 using the global TextField
+     * searchBar with the method setOnKeyRelease() creating the event where a String
+     * searchText that it uses to filter the text of what is in the UI. The initializer()
+     * method also sets up the download button and the generate button using
+     * openAllCompletedPDFs() and generateAndDisplayPDF().
+     * @throws IOException
+     */
     @FXML
     void initialize() throws IOException {
         //Create a folder in the users files if there already isn't one
@@ -108,6 +133,16 @@ public class Controller {
 
     }
 
+    /**
+     * The updateUIWithFields() method updates the UI with current status of each
+     * file. It starts by clearing the children of AnchorPane fieldsBox. It sets
+     * the vertical position of the first field with double yPos. It sets a List of
+     * descriptors to remove from the field names called descriptorsToRemove. It
+     * then splits the full field names into words and cleans them up appending them
+     * as needed. Per field it sets the layout position of the label and creating a
+     * TextField next to it. Then it adds the new fields to fieldsBox.
+     * @param fields is a Set of Strings
+     */
     protected void updateUIWithFields(Set<String> fields) {
         // Clear any existing fields in the UI
         fieldsBox.getChildren().clear();
@@ -157,6 +192,10 @@ public class Controller {
         fieldsBox.setPrefHeight(yPos);
     }
 
+    /**
+     * the generateAndDisplayPDF() method generates a new PDF
+     * @throws IOException
+     */
     private void generateAndDisplayPDF() throws IOException {
         // Collecting data from all TextField elements in the fieldsBox
         Map<String, String> formData = new HashMap<>();
@@ -211,7 +250,6 @@ public class Controller {
             // Add the label to the VBox in the UI to display it
         }
     }
-
 
     private void openPDF(String pdfPath) throws IOException {
         File pdfFile = new File(pdfPath);
