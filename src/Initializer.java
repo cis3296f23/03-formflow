@@ -25,18 +25,30 @@ import java.util.Set;
  * Specifically setting up the folders that FormFlow uses.
  */
 public class Initializer {
+    /**
+     * A  series of String folder names
+     */
     final String programName = "FormFlow";
     final String subFolder1 = "BlankPDFs";
     final String subFolder2 = "CompletedPDFs";
     final String subFolder3 = "Data";
     final String fileExtension = ".pdf";
 
+    /**
+     * A series of filepaths
+     */
     static final String homePath = System.getProperty("user.home");
     final File documentsPath = new File(getDocumentsFolderPath());
     final File mainFolder = new File(documentsPath.getAbsolutePath(), programName);
     final String completedPdfsPath = new File(mainFolder, subFolder2).getAbsolutePath();
 
-
+    /**
+     * A Set of Strings called uniqueFileNames
+     * A List of StructuredFiles
+     * A ListView called savedListView
+     * A List of StructuredFiles called selectedFiles
+     * A private Controller
+     */
     Set<String> uniqueFileNames = new HashSet<>();
     List<StructuredFile> StructuredFiles = new ArrayList<>();
     ListView savedListView;
@@ -127,6 +139,13 @@ public class Initializer {
         populateFileNameList(listView, null);
     }
 
+    /**
+     * In our list of files this method allows us to search our
+     * StructuredFiles for what is specified in the searchText
+     * and it populates the UI with the results
+     * @param listView
+     * @param searchText
+     */
     public void populateFileNameList(ListView listView, String searchText) {
         listView.getItems().clear(); //clear the list o we don't have to check what's new
         savedListView = listView; //save the list view so that internal methods can reference it
@@ -170,6 +189,11 @@ public class Initializer {
         }
     }
 
+    /**
+     * This method removes specified StructuredFile file
+     * @param file is a StructuredFile
+     * @throws IOException
+     */
     private void removeFile(StructuredFile file) throws IOException {
         // Add checker to make sure user wants to delete the file (and maybe a "don't ask again" button)
         File folder = new File(mainFolder, subFolder1);
@@ -250,7 +274,10 @@ public class Initializer {
         }
     }
 
-    //handles checkbox on list view eventually
+
+    /**
+     * GenerateFields object used to handle checkboxes
+     */
     private GenerateFields generateFields = new GenerateFields();
 
     /**

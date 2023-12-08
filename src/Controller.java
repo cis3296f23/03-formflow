@@ -34,7 +34,6 @@ public class Controller {
 
     @FXML
     private AnchorPane fieldsBox;
-
     @FXML
     private ScrollPane downloadableFilesScrollPane;
 
