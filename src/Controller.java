@@ -65,7 +65,7 @@ public class Controller {
 
     /**
      * The getInitializer() method returns the Initializer
-     * global object.
+     * global object named initializer.
      * @return Initializer initializer
      */
     public Initializer getInitializer() {
@@ -193,7 +193,12 @@ public class Controller {
     }
 
     /**
-     * the generateAndDisplayPDF() method generates a new PDF
+     * The generateAndDisplayPDF() method generates a new PDF based on the filled out
+     * text fields. First we collect nodes of each field box and for each of them we
+     * enter the TextField into a Map of Strings called formData. Then for each
+     * StructuredFile in initializer.selectedFiles the program uses the Writer to generate
+     * a new PDF with the provided form data. It then puts this newly generated PDF
+     * into the folder for FormFlow documents.
      * @throws IOException
      */
     private void generateAndDisplayPDF() throws IOException {
@@ -251,6 +256,13 @@ public class Controller {
         }
     }
 
+    /**
+     * The openPDF() method opens the newly generated PDF. It creates a File called
+     * pdfFile with the parameter pdfPath. It checks to make sure the file exists
+     * and that the Desktop can open the file, then it opens the file in the Desktop
+     * @param pdfPath
+     * @throws IOException
+     */
     private void openPDF(String pdfPath) throws IOException {
         File pdfFile = new File(pdfPath);
         if (pdfFile.exists() && Desktop.isDesktopSupported()) {
@@ -261,6 +273,11 @@ public class Controller {
         }
     }
 
+    /**
+     * The openAllCompletedPDFs() opens the PDFs clicked in the Generated Files
+     * section using the openPDF() function.
+     * @throws IOException
+     */
     private void openAllCompletedPDFS() throws IOException {
         for(StructuredFile file : initializer.selectedFiles){
             String completedPdfPath = initializer.completedPdfsPath + File.separator + file.file.getName();
