@@ -26,7 +26,10 @@ import java.util.stream.Collectors;
 import java.util.Set;
 
 
-
+/**
+ * Controllers are used in JavaFX to make it compatible
+ * with .fxml files. This controller controls component 1.
+ */
 public class Controller {
 
     @FXML
