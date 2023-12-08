@@ -20,32 +20,86 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * The Initializer class is where the back end of the program is set up.
+ * Specifically setting up the folders that FormFlow uses.
+ */
 public class Initializer {
+    /**
+     * To name a folder FormFlow
+     */
     final String programName = "FormFlow";
+    /**
+     * To name a folder BlankPDFs
+     */
     final String subFolder1 = "BlankPDFs";
+    /**
+     * To name a folder CompletedPDFs
+     */
     final String subFolder2 = "CompletedPDFs";
+    /**
+     * To name a folder Data
+     */
     final String subFolder3 = "Data";
+    /**
+     * To append the filetype .pdf to a given string filename
+     */
     final String fileExtension = ".pdf";
 
+    /**
+     * Gets and stores home path of the system
+     */
     static final String homePath = System.getProperty("user.home");
+    /**
+     * Gets and stores the path of the user's Documents folder
+     */
     final File documentsPath = new File(getDocumentsFolderPath());
+    /**
+     * Creates a new folder called FormFlow in the user's Documents folder
+     */
     final File mainFolder = new File(documentsPath.getAbsolutePath(), programName);
+    /**
+     * Gets and stores the completed path to the FormFlow folder
+     */
     final String completedPdfsPath = new File(mainFolder, subFolder2).getAbsolutePath();
 
-
+    /**
+     * A Set of Strings called uniqueFileNames
+     */
     Set<String> uniqueFileNames = new HashSet<>();
+    /**
+     * A List of StructuredFiles
+     */
     List<StructuredFile> StructuredFiles = new ArrayList<>();
+    /**
+     * A ListView called savedListView
+     */
     ListView savedListView;
-
+    /**
+     * A List of StructuredFiles called selectedFiles
+     */
     List<StructuredFile> selectedFiles = new ArrayList<>();
-
-
+    /**
+     * A private Controller
+     */
     private Controller controller;
 
+    /**
+     * Sets the Controller to the given controller
+     * @param controller
+     */
     public void setController(Controller controller) {
         this.controller = controller;
     }
 
+    /**
+     * Creates the folders in the filepath. First checks if they
+     * already exist, and if they do not they get set up in the
+     * Documents folder in the home path of your system. It creates
+     * a folder and 3 sub folders. The main folder is called FormFlow
+     * and the three sub folders are called BlankPDFs, CompletedPDFs,
+     * and Data.
+     */
     public void createFolders() {
         if (mainFolder.exists()) { //check if the program has been opened before
             System.out.println("Folder exists, do nothing");
@@ -62,6 +116,12 @@ public class Initializer {
         }
     }
 
+    /**
+     * The loadFiles() method gets the files that already exist in
+     * the folders and add them to the StructuredFile data structure.
+     * It makes
+     * @throws IOException
+     */
     public void loadFiles() throws IOException {
         //get the files that already exist in the folders and add them to the data structure
         File folder = new File(mainFolder, subFolder1);
@@ -97,10 +157,21 @@ public class Initializer {
         }
     }
 
+    /**
+     * This method is an overload of the other populateFileNameList()
+     * @param listView
+     */
     public void populateFileNameList(ListView listView) {
         populateFileNameList(listView, null);
     }
 
+    /**
+     * In our list of files this method allows us to search our
+     * StructuredFiles for what is specified in the searchText
+     * and it populates the UI with the results
+     * @param listView
+     * @param searchText
+     */
     public void populateFileNameList(ListView listView, String searchText) {
         listView.getItems().clear(); //clear the list o we don't have to check what's new
         savedListView = listView; //save the list view so that internal methods can reference it
@@ -144,8 +215,11 @@ public class Initializer {
         }
     }
 
-
-
+    /**
+     * This method removes specified StructuredFile file
+     * @param file is a StructuredFile
+     * @throws IOException
+     */
     private void removeFile(StructuredFile file) throws IOException {
         // Add checker to make sure user wants to delete the file (and maybe a "don't ask again" button)
         File folder = new File(mainFolder, subFolder1);
@@ -170,6 +244,13 @@ public class Initializer {
         populateFileNameList(savedListView);
     }
 
+    /**
+     * uploadNewFile() allows us to upload a file to FormFlow
+     * with a FileChooser. Then the chosen file gets placed in
+     * a File called destination. The selected files get added
+     * to the stage.
+     * @param stage
+     */
     public void uploadNewFile(Stage stage) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Choose PDFs to upload");
@@ -201,6 +282,13 @@ public class Initializer {
         }
     }
 
+    /**
+     * Creates subfolder with the name of the subfolder passed to it.
+     * It goes to the parent file and makes a new directory in the given
+     * File parent.
+     * @param parent is a File
+     * @param folderName is a String
+     */
     private void createSubFolder(File parent, String folderName) {
         File subFolder = new File(parent, folderName); //where to create folder
         boolean subFolderCreated = subFolder.mkdir();
@@ -212,9 +300,19 @@ public class Initializer {
         }
     }
 
-    //handles checkbox on list view eventually
+
+    /**
+     * GenerateFields object used to handle checkboxes
+     */
     private GenerateFields generateFields = new GenerateFields();
 
+    /**
+     * Handles check boxes if they are selected. It calls
+     * updateFields and indicates whether to add or remove
+     * the files.
+     * @param checkBox
+     * @param file is a StructuredFile
+     */
     private void handleCheckBox(CheckBox checkBox, StructuredFile file) {
         // Update the unique fields based on the selection status of the checkbox
         generateFields.updateFields(file, checkBox.isSelected());
@@ -231,6 +329,11 @@ public class Initializer {
 
     }
 
+    /**
+     * The getDocumentsFolderPath() method identifies the Documents folder
+     * and returns the path as a String
+     * @return the filepath to the Documents folder on the computer
+     */
     private static String getDocumentsFolderPath() {
         String osName = System.getProperty("os.name").toLowerCase();
         // check if the OS is Windows and if onedrive is in use

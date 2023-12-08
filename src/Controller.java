@@ -26,43 +26,104 @@ import java.util.stream.Collectors;
 import java.util.Set;
 
 
-
+/**
+ * Controllers are used in JavaFX to make it compatible
+ * with .fxml files. This controller controls component 1.
+ */
 public class Controller {
 
+
+    /**
+     * Where the fields exist in the UI
+     */
     @FXML
     private AnchorPane fieldsBox;
-
+    /**
+     * The scroll pane of downloadable files after editing
+     */
     @FXML
     private ScrollPane downloadableFilesScrollPane;
 
+    /**
+     * The pane where the downloadable files box exists in the UI
+     */
     @FXML
     private AnchorPane downloadableFilesBox;
 
+    /**
+     * The box where the uploaded PDF list exists on the UI
+     */
     @FXML
     private VBox pdfListVBox;
 
+    /**
+     * The UI button for generating filled-out PDFs after the information has been entered in the fields
+     */
     @FXML
     private Button generateButton;
 
+    /**
+     * The UI button to download the modified PDFs
+     */
     @FXML
     private Button downloadAllButton;
 
+    /**
+     * The UI button to pull up the file system to upload PDFs to FormFlow
+     */
     @FXML
     private Button uploadButton;
 
+    /**
+     * The list of forms uploaded into FormFlow displayed in the UI
+     */
     @FXML
     private ListView formListView;
 
+    /**
+     * The Stage that the UI exists in
+     */
     static Stage theStage;
 
+    /**
+     * The Initializer of the program that sets up back end
+     */
     private final Initializer initializer = new Initializer();
 
+    /**
+     * The text field over the uploaded PDFs that allows you to search
+     */
     @FXML
     private TextField searchBar;
 
+    /**
+     * The getInitializer() method returns the Initializer
+     * global object named initializer.
+     * @return Initializer initializer
+     */
     public Initializer getInitializer() {
         return initializer;
     }
+
+    /**
+     * The initialize() method in the controller uses the Initializer to set up
+     * the back end of the program. First it creates a folder in the user files
+     * with initializer.createFolders(). It then loads the files into the list
+     * with initializer.loadFiles(). It then uses initializer.populateFileNameList()
+     * passing the global ListView formListView, which displays the list of forms
+     * in the UI. The method then sets up an upload button that prompts users to
+     * enter files from their filesystem upon clicking it by setting Button uploadButton
+     * with the method setOnAction(). Upon the upload button being clicked and
+     * files being selected the initializer calls the method uploadNewFile() passing
+     * Stage theStage and loads the updated folder into the list with loadFiles()
+     * checking the input file type for any errors. The initialize method of the
+     * controller also sets up the search bar in component 1 using the global TextField
+     * searchBar with the method setOnKeyRelease() creating the event where a String
+     * searchText that it uses to filter the text of what is in the UI. The initializer()
+     * method also sets up the download button and the generate button using
+     * openAllCompletedPDFs() and generateAndDisplayPDF().
+     * @throws IOException
+     */
     @FXML
     void initialize() throws IOException {
         //Create a folder in the users files if there already isn't one
@@ -105,6 +166,16 @@ public class Controller {
 
     }
 
+    /**
+     * The updateUIWithFields() method updates the UI with current status of each
+     * file. It starts by clearing the children of AnchorPane fieldsBox. It sets
+     * the vertical position of the first field with double yPos. It sets a List of
+     * descriptors to remove from the field names called descriptorsToRemove. It
+     * then splits the full field names into words and cleans them up appending them
+     * as needed. Per field it sets the layout position of the label and creating a
+     * TextField next to it. Then it adds the new fields to fieldsBox.
+     * @param fields is a Set of Strings
+     */
     protected void updateUIWithFields(Set<String> fields) {
         // Clear any existing fields in the UI
         fieldsBox.getChildren().clear();
@@ -154,6 +225,15 @@ public class Controller {
         fieldsBox.setPrefHeight(yPos);
     }
 
+    /**
+     * The generateAndDisplayPDF() method generates a new PDF based on the filled out
+     * text fields. First we collect nodes of each field box and for each of them we
+     * enter the TextField into a Map of Strings called formData. Then for each
+     * StructuredFile in initializer.selectedFiles the program uses the Writer to generate
+     * a new PDF with the provided form data. It then puts this newly generated PDF
+     * into the folder for FormFlow documents.
+     * @throws IOException
+     */
     private void generateAndDisplayPDF() throws IOException {
         // Collecting data from all TextField elements in the fieldsBox
         Map<String, String> formData = new HashMap<>();
@@ -209,7 +289,13 @@ public class Controller {
         }
     }
 
-
+    /**
+     * The openPDF() method opens the newly generated PDF. It creates a File called
+     * pdfFile with the parameter pdfPath. It checks to make sure the file exists
+     * and that the Desktop can open the file, then it opens the file in the Desktop
+     * @param pdfPath
+     * @throws IOException
+     */
     private void openPDF(String pdfPath) throws IOException {
         File pdfFile = new File(pdfPath);
         if (pdfFile.exists() && Desktop.isDesktopSupported()) {
@@ -220,6 +306,11 @@ public class Controller {
         }
     }
 
+    /**
+     * The openAllCompletedPDFs() opens the PDFs clicked in the Generated Files
+     * section using the openPDF() function.
+     * @throws IOException
+     */
     private void openAllCompletedPDFS() throws IOException {
         for(StructuredFile file : initializer.selectedFiles){
             String completedPdfPath = initializer.completedPdfsPath + File.separator + file.file.getName();

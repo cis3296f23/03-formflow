@@ -14,6 +14,10 @@ import java.util.List;
 import java.util.Set;
 
 
+/**
+ * This class is not implemented but will be used to control
+ * component 2 of FormFlow
+ */
 public class Controller2 {
 
     @FXML
