@@ -1,5 +1,7 @@
 package src;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.*;
@@ -8,12 +10,11 @@ import javafx.scene.control.Label;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import java.awt.*;
+import java.beans.EventHandler;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -49,6 +50,9 @@ public class Controller {
 
     @FXML
     private Button uploadButton;
+
+    @FXML
+    private Button switchSceneButton;
 
     @FXML
     private ListView formListView;
@@ -103,6 +107,9 @@ public class Controller {
             }
         });
 
+        switchSceneButton.setOnAction(event -> {
+            SharedData.getInstance().getSceneManager().switchSceneTwo();
+        });
     }
 
     protected void updateUIWithFields(Set<String> fields) {

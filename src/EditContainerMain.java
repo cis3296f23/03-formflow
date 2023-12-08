@@ -11,7 +11,7 @@ public class EditContainerMain extends Application {
     public void start(Stage stage) throws Exception {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("assets/FormFlowComponent2.fxml"));
         Parent root = loader.load();
-        EditController.giveStage(stage);
+//        EditController.giveStage(stage);
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.setTitle("FormFlowComponent2");

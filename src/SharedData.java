@@ -1,8 +1,13 @@
 package src;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class SharedData {
     private static SharedData instance;
     private SceneManager sceneManager ;
+
+    private List<String> assets;
 
     public static synchronized SharedData getInstance(){
         if(instance == null){
@@ -19,5 +24,13 @@ public class SharedData {
         sceneManager = manager;
     }
 
+
+    public List<String> getAssets() {
+        return assets;
+    }
+
+    public void setAssets(ArrayList<String> assets) {
+        this.assets = assets;
+    }
 
 }

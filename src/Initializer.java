@@ -14,6 +14,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -25,12 +26,16 @@ public class Initializer {
     final String subFolder1 = "BlankPDFs";
     final String subFolder2 = "CompletedPDFs";
     final String subFolder3 = "Data";
+
+    final String subFolder4 = "HTML";
     final String fileExtension = ".pdf";
 
     static final String homePath = System.getProperty("user.home");
     final File documentsPath = new File(getDocumentsFolderPath());
     final File mainFolder = new File(documentsPath.getAbsolutePath(), programName);
     final String completedPdfsPath = new File(mainFolder, subFolder2).getAbsolutePath();
+    final String outputHTMLPath = new File(mainFolder, subFolder4).getAbsolutePath();
+
 
 
     Set<String> uniqueFileNames = new HashSet<>();
@@ -56,6 +61,7 @@ public class Initializer {
                 createSubFolder(mainFolder, subFolder1);
                 createSubFolder(mainFolder, subFolder2);
                 createSubFolder(mainFolder, subFolder3);
+                createSubFolder(mainFolder, subFolder4);
             } else {
                 System.out.println("Failed to create subfolder: " + programName);
             }
@@ -96,6 +102,7 @@ public class Initializer {
             }
         }
     }
+
 
     public void populateFileNameList(ListView listView) {
         populateFileNameList(listView, null);
@@ -242,5 +249,4 @@ public class Initializer {
             return homePath + File.separator + "Documents";
         }
     }
-
 }
