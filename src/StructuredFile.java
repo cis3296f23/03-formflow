@@ -11,8 +11,17 @@ import java.util.List;
  * type PDFieldWithLocation named fields.
  */
 public class StructuredFile {
+    /**
+     * Represents the file name itself
+     */
     String fileName;
+    /**
+     * Represents the file as a File in Java
+     */
     File file;
+    /**
+     * Represents the fields of the given File
+     */
     List<PDFieldWithLocation> fields;
 
     /**

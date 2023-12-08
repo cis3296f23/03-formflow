@@ -10,14 +10,21 @@ import org.apache.pdfbox.pdmodel.interactive.form.PDField;
  * PDField named pdField and a PDRectangle called rectangle.
  */
 public class PDFieldWithLocation {
+
+    /**
+     * A PDField represents an interactive form field
+     */
     public final PDField pdField;
+    /**
+     * PDRectangle represents its position on the page and other physical attributes
+     */
     public final PDRectangle rectangle;
 
     /**
      * This constructor accepts a PDField and PDRectangle and assigns them
      * to the corresponding global variables
-     * @param pdField
-     * @param rectangle
+     * @param pdField is a PDField
+     * @param rectangle is a PDRectangle
      */
     public PDFieldWithLocation(PDField pdField, PDRectangle rectangle) {
         this.pdField = pdField;

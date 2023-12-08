@@ -8,6 +8,10 @@ import org.apache.pdfbox.pdmodel.interactive.form.PDAcroForm;
 import org.apache.pdfbox.pdmodel.interactive.form.PDCheckBox;
 import org.apache.pdfbox.pdmodel.interactive.form.PDField;
 
+/**
+ * Writer is a class that writes the information filled in the text
+ * field to the new PDF document and saves it in the folder.
+ */
 public class Writer {
 
     /**

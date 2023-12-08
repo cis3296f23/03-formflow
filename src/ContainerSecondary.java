@@ -11,7 +11,7 @@ import javafx.stage.Stage;
  * ContainerSecondary is the container for component 2. The container
  * is used to divide the UI into regions and layout components
  * in each region.
- * Extends the Application class
+ * Extends the Application class.
  */
 public class ContainerSecondary extends Application {
 
@@ -20,7 +20,7 @@ public class ContainerSecondary extends Application {
      * Parent object named root. Then adds the FormFlow logo to the Icon
      * portion of the stage. The start method then sets the scene, the title,
      * and then shows the scene.
-     * @param stage
+     * @param stage is the Stage for the UI
      * @throws Exception
      */
     @Override

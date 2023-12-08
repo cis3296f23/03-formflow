@@ -32,33 +32,67 @@ import java.util.Set;
  */
 public class Controller {
 
+
+    /**
+     * Where the fields exist in the UI
+     */
     @FXML
     private AnchorPane fieldsBox;
+    /**
+     * The scroll pane of downloadable files after editing
+     */
     @FXML
     private ScrollPane downloadableFilesScrollPane;
 
+    /**
+     * The pane where the downloadable files box exists in the UI
+     */
     @FXML
     private AnchorPane downloadableFilesBox;
 
+    /**
+     * The box where the uploaded PDF list exists on the UI
+     */
     @FXML
     private VBox pdfListVBox;
 
+    /**
+     * The UI button for generating filled-out PDFs after the information has been entered in the fields
+     */
     @FXML
     private Button generateButton;
 
+    /**
+     * The UI button to download the modified PDFs
+     */
     @FXML
     private Button downloadAllButton;
 
+    /**
+     * The UI button to pull up the file system to upload PDFs to FormFlow
+     */
     @FXML
     private Button uploadButton;
 
+    /**
+     * The list of forms uploaded into FormFlow displayed in the UI
+     */
     @FXML
     private ListView formListView;
 
+    /**
+     * The Stage that the UI exists in
+     */
     static Stage theStage;
 
+    /**
+     * The Initializer of the program that sets up back end
+     */
     private final Initializer initializer = new Initializer();
 
+    /**
+     * The text field over the uploaded PDFs that allows you to search
+     */
     @FXML
     private TextField searchBar;
 

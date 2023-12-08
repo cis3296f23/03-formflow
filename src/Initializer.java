@@ -26,36 +26,62 @@ import java.util.Set;
  */
 public class Initializer {
     /**
-     * A  series of String folder names
+     * To name a folder FormFlow
      */
     final String programName = "FormFlow";
+    /**
+     * To name a folder BlankPDFs
+     */
     final String subFolder1 = "BlankPDFs";
+    /**
+     * To name a folder CompletedPDFs
+     */
     final String subFolder2 = "CompletedPDFs";
+    /**
+     * To name a folder Data
+     */
     final String subFolder3 = "Data";
+    /**
+     * To append the filetype .pdf to a given string filename
+     */
     final String fileExtension = ".pdf";
 
     /**
-     * A series of filepaths
+     * Gets and stores home path of the system
      */
     static final String homePath = System.getProperty("user.home");
+    /**
+     * Gets and stores the path of the user's Documents folder
+     */
     final File documentsPath = new File(getDocumentsFolderPath());
+    /**
+     * Creates a new folder called FormFlow in the user's Documents folder
+     */
     final File mainFolder = new File(documentsPath.getAbsolutePath(), programName);
+    /**
+     * Gets and stores the completed path to the FormFlow folder
+     */
     final String completedPdfsPath = new File(mainFolder, subFolder2).getAbsolutePath();
 
     /**
      * A Set of Strings called uniqueFileNames
-     * A List of StructuredFiles
-     * A ListView called savedListView
-     * A List of StructuredFiles called selectedFiles
-     * A private Controller
      */
     Set<String> uniqueFileNames = new HashSet<>();
+    /**
+     * A List of StructuredFiles
+     */
     List<StructuredFile> StructuredFiles = new ArrayList<>();
+    /**
+     * A ListView called savedListView
+     */
     ListView savedListView;
-
+    /**
+     * A List of StructuredFiles called selectedFiles
+     */
     List<StructuredFile> selectedFiles = new ArrayList<>();
-
-
+    /**
+     * A private Controller
+     */
     private Controller controller;
 
     /**

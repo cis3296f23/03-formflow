@@ -16,7 +16,9 @@ import java.util.Set;
  */
 public class GenerateFields {
 
-    // A set to store unique field names from the PDF
+    /**
+     * A set to store unique field names from the PDF
+     */
     private Set<String> uniqueFields = new HashSet<>();
 
     /**
